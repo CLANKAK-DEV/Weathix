@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewbox="0 0 64 64">
+    <defs>
+        <style type="text/css"><![CDATA[
+            @keyframes am-weather-wind {
+                0% { stroke-dashoffset: 0; opacity: 0; }
+                20% { opacity: 1; }
+                80% { opacity: 1; }
+                100% { stroke-dashoffset: -100; opacity: 0; }
+            }
+            .am-weather-wind-line {
+                animation-name: am-weather-wind;
+                animation-duration: 3s;
+                animation-timing-function: ease-in-out;
+                animation-iteration-count: infinite;
+            }
+        ]]></style>
+    </defs>
+    <g transform="translate(32,32)">
+        <path class="am-weather-wind-line" d="M-20,-10 C-10,-10 0,-20 10,-10 C20,0 10,10 0,10" fill="none" stroke="#BDBDBD" stroke-dasharray="50,150" stroke-linecap="round" stroke-width="3" />
+        <path class="am-weather-wind-line" style="animation-delay: 1s;" d="M-20,0 C-10,0 0,-10 10,0 C20,10 10,20 0,20" fill="none" stroke="#BDBDBD" stroke-dasharray="50,150" stroke-linecap="round" stroke-width="3" />
+        <path class="am-weather-wind-line" style="animation-delay: 2s;" d="M-20,10 C-10,10 0,0 10,10 C20,20 10,30 0,30" fill="none" stroke="#BDBDBD" stroke-dasharray="50,150" stroke-linecap="round" stroke-width="3" />
+    </g>
+</svg>

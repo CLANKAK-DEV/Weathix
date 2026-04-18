@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewbox="0 0 64 64">
+    <defs>
+        <style type="text/css"><![CDATA[
+            @keyframes am-weather-fog {
+                0% { transform: translate(-5px,0); opacity: 0.3; }
+                50% { transform: translate(5px,0); opacity: 1; }
+                100% { transform: translate(-5px,0); opacity: 0.3; }
+            }
+            .am-weather-fog-line {
+                animation-name: am-weather-fog;
+                animation-duration: 4s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+        ]]></style>
+    </defs>
+    <g transform="translate(32,32)">
+        <line class="am-weather-fog-line" fill="none" stroke="#BDBDBD" stroke-linecap="round" stroke-width="3" x1="-15" x2="15" y1="-8" y2="-8" />
+        <line class="am-weather-fog-line" style="animation-delay: 1s;" fill="none" stroke="#BDBDBD" stroke-linecap="round" stroke-width="3" x1="-20" x2="20" y1="0" y2="0" />
+        <line class="am-weather-fog-line" style="animation-delay: 2s;" fill="none" stroke="#BDBDBD" stroke-linecap="round" stroke-width="3" x1="-15" x2="15" y1="8" y2="8" />
+    </g>
+</svg>

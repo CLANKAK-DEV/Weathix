@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewbox="0 0 64 64">
+    <defs>
+        <style type="text/css"><![CDATA[
+            @keyframes am-weather-sun {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .am-weather-sun {
+                animation-name: am-weather-sun;
+                animation-duration: 9s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+            @keyframes am-weather-sun-shiny {
+                0% { stroke-dasharray: 3px 10px; stroke-dashoffset: 0px; }
+                50% { stroke-dasharray: 0.1px 10px; stroke-dashoffset: -1px; }
+                100% { stroke-dasharray: 3px 10px; stroke-dashoffset: 0px; }
+            }
+            .am-weather-sun-shiny line {
+                animation-name: am-weather-sun-shiny;
+                animation-duration: 2s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+        ]]></style>
+    </defs>
+    <g transform="translate(32,32)">
+        <g class="am-weather-sun am-weather-sun-shiny">
+            <g>
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(45)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(90)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(135)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(180)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(225)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(270)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+            <g transform="rotate(315)">
+                <line fill="none" stroke="#FAD02C" stroke-linecap="round" stroke-width="2" transform="translate(0,9)" x1="0" x2="0" y1="0" y2="3" />
+            </g>
+        </g>
+        <circle cx="0" cy="0" fill="#FAD02C" r="5" stroke="#FAD02C" stroke-width="2"/>
+    </g>
+</svg>
