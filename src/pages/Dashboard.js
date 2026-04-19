@@ -31,68 +31,6 @@ function Recenter({ lat, lon, zoom }) {
 }
 
 
-function MapControls({ onZoomIn, onZoomOut, onLocate, setMapLayer, mapLayer, setMapFull, mapFull }) {
-  return (
-    <>
-      <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 1000, display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {MAP_LAYERS.map(l => (
-          <button
-            key={l.id}
-            onClick={() => setMapLayer(l.id)}
-            style={{
-              background: mapLayer === l.id ? l.color : 'rgba(15, 23, 42, 0.9)',
-              border: `1px solid ${mapLayer === l.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)'}`,
-              color: '#fff',
-              padding: '10px 16px', borderRadius: 12,
-              fontSize: 13, fontWeight: 700,
-              cursor: 'pointer', backdropFilter: 'blur(16px)',
-              minWidth: 120, textAlign: 'left',
-              display: 'flex', alignItems: 'center', gap: 12,
-              transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-              boxShadow: mapLayer === l.id ? `0 8px 20px ${l.color}40` : '0 4px 12px rgba(0,0,0,0.2)'
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', transform: mapLayer === l.id ? 'scale(1.1)' : 'scale(1)', transition: 'transform 0.25s ease' }}>{l.icon}</span>
-            {l.label}
-          </button>
-        ))}
-        <button onClick={() => setMapFull(!mapFull)} style={{ background: 'transparent', border: 'none', color: '#fff', padding: '6px 12px', borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: 'pointer', minWidth: 90, textAlign: 'left', marginTop: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
-          {mapFull ? <Ic.Collapse /> : <Ic.Expand />} {mapFull ? 'Exit Fullscreen' : 'Fullscreen'}
-        </button>
-      </div>
-      <div style={{ position: 'absolute', bottom: 16, left: 16, zIndex: 1000, display: 'flex', gap: 8 }}>
-        <button onClick={onLocate} style={{
-          background: 'rgba(27,48,34,0.9)', border: 'none', color: '#fff',
-          width: 40, height: 40, borderRadius: 12, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)'
-        }} title="Zoom to my location">
-          <Ic.Locate />
-        </button>
-      </div>
-      <div style={{ position: 'absolute', bottom: 16, right: 16, zIndex: 1000, display: 'flex', flexDirection: 'row', gap: 8 }}>
-        <button onClick={onZoomIn} style={{
-          background: 'rgba(255,255,255,0.9)', border: 'none', color: '#1e293b',
-          width: 40, height: 40, borderRadius: 12, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)',
-          fontSize: 24, fontWeight: 700
-        }} title="Zoom in">
-          +
-        </button>
-        <button onClick={onZoomOut} style={{
-          background: 'rgba(255,255,255,0.9)', border: 'none', color: '#1e293b',
-          width: 40, height: 40, borderRadius: 12, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)', backdropFilter: 'blur(4px)',
-          fontSize: 24, fontWeight: 700
-        }} title="Zoom out">
-          −
-        </button>
-      </div>
-    </>
-  );
-}
 
 
 
@@ -486,7 +424,6 @@ function ForecastModal({ day, onClose, hourlyData }) {
     return d.getDate() === dayDate.getDate();
   });
 
-  const accent = day.group === 'clear' ? '#45645e' : day.group === 'rain' ? '#84a59d' : day.group === 'thunder' ? '#a855f7' : '#94a3b8';
 
   return (
     <div style={{
