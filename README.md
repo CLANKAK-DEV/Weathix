@@ -1,6 +1,6 @@
-# 🌦️ Weathix: Architectural Weather Intelligence
+# 🌦️ Weather Dashboard: Architectural Weather Intelligence
 
-Weathix is a premium, privacy-focused weather dashboard designed with a high-contrast **Architectural Ledger** aesthetic. It provides precise meteorological data, interactive maps, and an AI-powered weather assistant to help you plan your day with confidence.
+A premium, privacy-focused weather dashboard designed with a high-contrast **Architectural Ledger** aesthetic. It provides precise meteorological data, interactive maps, and an AI-powered weather assistant to help you plan your day with confidence.
 
 ---
 
@@ -13,8 +13,6 @@ Weathix is a premium, privacy-focused weather dashboard designed with a high-con
 ### 2. Installation
 Clone the repository and install the dependencies:
 ```bash
-git clone https://github.com/CLANKAK-DEV/web2.git
-cd web2
 npm install
 ```
 
@@ -34,7 +32,7 @@ The app will be available at `http://localhost:3000`.
 
 ---
 
-## 🛠️ How to Use Weathix
+## 🛠️ How to Use
 
 ### 🔍 Searching for a City
 - Click the **Search** input in the top bar.
@@ -71,9 +69,5 @@ The app will be available at `http://localhost:3000`.
 - **Responsive Design**: Works beautifully on desktops, tablets, and mobile devices.
 
 ---
-
-## 👨‍💻 Author
-Designed and Developed by **clankak]([https://www.lahoucinechouker.online](https://www.clankak.online/)/)**
-
----
 *Precision Engineered for the Modern Web.*
+

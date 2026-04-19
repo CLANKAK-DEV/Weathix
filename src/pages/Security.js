@@ -68,7 +68,7 @@ function Security() {
               Our Security Commitment
             </h2>
             <p style={{ fontSize: 14, lineHeight: 1.8, color: darkMode ? '#cbd5e1' : '#475569' }}>
-              Weathix Weather takes security seriously. We implement multiple layers of protection to ensure your data remains safe and your privacy is maintained.
+              This weather dashboard takes security seriously. We implement multiple layers of protection to ensure your data remains safe and your privacy is maintained.
             </p>
           </section>
 

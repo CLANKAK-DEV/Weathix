@@ -1,4 +1,4 @@
-# Weathix — Project Documentation
+# Weather Dashboard — Project Documentation
 
 A modern, privacy-focused weather web app. Real-time conditions, 14-day forecast,
 interactive radar map, and an AI weather assistant — all in a clean interface
@@ -351,5 +351,4 @@ npm run build     # production bundle in build/
 
 ---
 ---
-*WEATHIX — Precision Engineered for the Modern Web.*  
-**Powered by [Lahoucine Chouker](https://www.lahoucinechouker.online/)**
+*Weather Dashboard — Precision Engineered for the Modern Web.*

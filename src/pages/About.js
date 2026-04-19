@@ -4,7 +4,7 @@ function About() {
   return (
     <div className="fade-up" style={{ maxWidth: '900px', margin: '0 auto', width: '100%' }}>
       <header style={{ marginBottom: '48px' }}>
-        <h1 style={{ fontSize: '48px', fontWeight: 900, color: 'var(--on-surface)', tracking: '-0.04em', marginBottom: '8px', textTransform: 'uppercase' }}>About Weathix</h1>
+        <h1 style={{ fontSize: '48px', fontWeight: 900, color: 'var(--on-surface)', tracking: '-0.04em', marginBottom: '8px', textTransform: 'uppercase' }}>About Weather</h1>
         <p style={{ color: 'var(--on-surface-variant)', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.14em' }}>Architectural Ledger & Meteorological Intelligence</p>
       </header>
 
@@ -13,7 +13,7 @@ function About() {
           <div style={{ position: 'absolute', top: 0, left: 0, width: '8px', height: '100%', background: 'var(--primary)' }}></div>
           <h2 style={{ fontSize: '20px', fontWeight: 900, color: 'var(--on-surface)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '24px' }}>The Philosophy</h2>
           <p style={{ fontSize: '15px', lineHeight: '1.8', color: 'var(--on-surface-variant)' }}>
-            Weathix is built on the concept of an <strong>Architectural Ledger</strong>. It treats weather data not just as information, but as a record of environmental truth. The design language emphasizes precision, structural integrity, and high-contrast clarity, inspired by technical blueprints and ledger sheets.
+            This dashboard is built on the concept of an <strong>Architectural Ledger</strong>. It treats weather data not just as information, but as a record of environmental truth. The design language emphasizes precision, structural integrity, and high-contrast clarity, inspired by technical blueprints and ledger sheets.
           </p>
         </section>
 
@@ -45,10 +45,8 @@ function About() {
 
         <section style={{ textAlign: 'center', padding: '48px 0' }}>
           <p style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--outline)' }}>Precision Engineered for the Modern Web</p>
-          <p style={{ fontSize: '14px', fontWeight: 900, color: 'var(--primary)', marginTop: '8px' }}>© 2026 WEATHIX METEOROLOGY</p>
-          <p style={{ marginTop: '16px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Powered by <a href="https://www.lahoucinechouker.online/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary)', textDecoration: 'none', borderBottom: '1px solid var(--primary)' }}>Lahoucine Chouker</a>
-          </p>
+          <p style={{ fontSize: '14px', fontWeight: 900, color: 'var(--primary)', marginTop: '8px' }}>© 2026 WEATHER METEOROLOGY</p>
+
         </section>
       </div>
     </div>

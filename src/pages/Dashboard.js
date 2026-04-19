@@ -250,7 +250,7 @@ function PermissionModal({ onClose }) {
           <h2 style={{ fontSize: 24, fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em', color: 'var(--on-surface)' }}>Access Denied</h2>
         </div>
         <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--on-surface-variant)', marginBottom: 32 }}>
-          Location permissions are currently disabled for Weathix. To use the "Locate Me" feature, please enable location access in your browser settings and try again.
+          Location permissions are currently disabled for this application. To use the "Locate Me" feature, please enable location access in your browser settings and try again.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ background: 'var(--surface-container-low)', padding: 16, border: '1px solid var(--outline-variant)' }}>
@@ -921,7 +921,7 @@ export default function Dashboard() {
 
       <aside className="slab--glass" style={{ width: 256, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '32px 0', overflowY: 'auto', border: 'none', borderRight: '1px solid var(--outline-variant)', zIndex: 10 }}>
         <div style={{ padding: '0 32px', marginBottom: 32 }}>
-          <h1 style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.04em', color: 'var(--primary-container)', textTransform: 'uppercase' }}>Weathix</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.04em', color: 'var(--primary-container)', textTransform: 'uppercase' }}>Weather</h1>
           <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--secondary)', marginTop: 4 }}>Architectural Ledger</p>
         </div>
 
@@ -978,18 +978,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        <div style={{ marginTop: 'auto', padding: '24px 20px 0 20px', borderTop: '1px solid var(--outline-variant)' }}>
-          <p style={{ fontSize: '9px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--outline)', marginBottom: '8px' }}>Developer</p>
-          <a
-            href="https://www.lahoucinechouker.online/"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontSize: '11px', fontWeight: 900, color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-          >
-            Lahoucine Chouker
-            <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
-          </a>
-        </div>
+
       </aside>
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>

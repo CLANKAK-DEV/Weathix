@@ -63,7 +63,7 @@ function Privacy({ setView }) {
               Introduction
             </h2>
             <p style={{ fontSize: 14, lineHeight: 1.8, color: darkMode ? '#cbd5e1' : '#475569' }}>
-              Weathix Weather ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our weather application.
+              This weather application ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our weather application.
             </p>
           </section>
 

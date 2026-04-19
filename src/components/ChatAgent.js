@@ -85,7 +85,7 @@ function ChatAgent({ weather }) {
               </div>
               <div>
                 <div style={{ fontSize: 14, fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--on-surface)' }}>
-                  WEATHIX AI
+                  WEATHER AI
                 </div>
                 <div style={{ fontSize: 10, color: 'var(--secondary)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 6, marginTop: 2 }}>
                   <span style={{ width: 6, height: 6, background: 'var(--secondary)' }} />
@@ -218,7 +218,7 @@ function ChatAgent({ weather }) {
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Message Weathix AI..."
+              placeholder="Message Weather AI..."
               disabled={loading}
               maxLength={500}
               style={{
