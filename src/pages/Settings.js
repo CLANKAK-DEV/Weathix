@@ -1,496 +1,213 @@
-import React, { useState, useEffect } from 'react';
-import { Ic } from '../utils/icons';
+import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
-const LANGUAGES = [
-  { code: 'en', name: 'English', native: 'English', rtl: false },
-  { code: 'es', name: 'Spanish', native: 'Español', rtl: false },
-  { code: 'fr', name: 'French', native: 'Français', rtl: false },
-  { code: 'de', name: 'German', native: 'Deutsch', rtl: false },
-  { code: 'it', name: 'Italian', native: 'Italiano', rtl: false },
-  { code: 'pt', name: 'Portuguese', native: 'Português', rtl: false },
-  { code: 'ru', name: 'Russian', native: 'Русский', rtl: false },
-  { code: 'ja', name: 'Japanese', native: '日本語', rtl: false },
-  { code: 'ko', name: 'Korean', native: '한국어', rtl: false },
-  { code: 'zh', name: 'Chinese', native: '中文', rtl: false },
-  { code: 'ar', name: 'Arabic', native: 'العربية', rtl: true },
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी', rtl: false },
-  { code: 'bn', name: 'Bengali', native: 'বাংলা', rtl: false },
-  { code: 'ur', name: 'Urdu', native: 'اردو', rtl: true },
-  { code: 'tr', name: 'Turkish', native: 'Türkçe', rtl: false },
-  { code: 'vi', name: 'Vietnamese', native: 'Tiếng Việt', rtl: false },
-  { code: 'th', name: 'Thai', native: 'ไทย', rtl: false },
-  { code: 'id', name: 'Indonesian', native: 'Bahasa Indonesia', rtl: false },
-  { code: 'ms', name: 'Malay', native: 'Bahasa Melayu', rtl: false },
-  { code: 'pl', name: 'Polish', native: 'Polski', rtl: false },
-  { code: 'nl', name: 'Dutch', native: 'Nederlands', rtl: false },
-  { code: 'sv', name: 'Swedish', native: 'Svenska', rtl: false },
-  { code: 'da', name: 'Danish', native: 'Dansk', rtl: false },
-  { code: 'no', name: 'Norwegian', native: 'Norsk', rtl: false },
-  { code: 'fi', name: 'Finnish', native: 'Suomi', rtl: false },
-  { code: 'el', name: 'Greek', native: 'Ελληνικά', rtl: false },
-  { code: 'he', name: 'Hebrew', native: 'עברית', rtl: true },
-  { code: 'fa', name: 'Persian', native: 'فارسی', rtl: true },
-  { code: 'uk', name: 'Ukrainian', native: 'Українська', rtl: false },
-  { code: 'cs', name: 'Czech', native: 'Čeština', rtl: false },
-];
+function Settings({ setView }) {
+  const { darkMode, toggleTheme, unit, setUnit } = useTheme();
+  const [backgroundAccess, setBackgroundAccess] = useState(true);
+  const [preciseLocation, setPreciseLocation] = useState(false);
 
-const TRANSLATIONS = {
-  en: {
-    settings: 'Settings',
-    language: 'Language',
-    appearance: 'Appearance',
-    darkMode: 'Dark Mode',
-    lightMode: 'Light Mode',
-    location: 'Location',
-    locationEnabled: 'Location Services Enabled',
-    locationDisabled: 'Location Services Disabled',
-    locationDesc: 'Allow the app to access your location for accurate weather data',
-    aiSettings: 'AI Assistant',
-    dailyLimit: 'Daily Request Limit',
-    resetUsage: 'Reset Daily Usage',
-    learn: 'Learn More',
-    privacy: 'Privacy Policy',
-    security: 'Security',
-    about: 'About',
-    save: 'Save Changes',
-  },
-  fr: {
-    settings: 'Paramètres',
-    language: 'Langue',
-    appearance: 'Apparence',
-    darkMode: 'Mode Sombre',
-    lightMode: 'Mode Clair',
-    location: 'Localisation',
-    locationEnabled: 'Services de Localisation Activés',
-    locationDisabled: 'Services de Localisation Désactivés',
-    locationDesc: 'Autoriser l\'application à accéder à votre localisation pour des données météo précises',
-    aiSettings: 'Assistant IA',
-    dailyLimit: 'Limite Quotidienne',
-    resetUsage: 'Réinitialiser l\'Utilisation',
-    learn: 'En Savoir Plus',
-    privacy: 'Politique de Confidentialité',
-    security: 'Sécurité',
-    about: 'À Propos',
-    save: 'Enregistrer',
-  },
-  ar: {
-    settings: 'الإعدادات',
-    language: 'اللغة',
-    appearance: 'المظهر',
-    darkMode: 'الوضع الداكن',
-    lightMode: 'الوضع الفاتح',
-    location: 'الموقع',
-    locationEnabled: 'خدمات الموقع مفعلة',
-    locationDisabled: 'خدمات الموقع معطلة',
-    locationDesc: 'السماح للتطبيق بالوصول إلى موقعك للحصول على بيانات الطقس الدقيقة',
-    learn: 'معرفة المزيد',
-    privacy: 'سياسة الخصوصية',
-    security: 'الأمان',
-    about: 'حول',
-    save: 'حفظ التغييرات',
-  },
-};
-
-function Settings() {
-  const { darkMode, toggleTheme } = useTheme();
-  const [language, setLanguage] = useState(() => localStorage.getItem('app_language') || 'en');
-  const [locationEnabled, setLocationEnabled] = useState(() => localStorage.getItem('location_enabled') !== 'false');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showLangDropdown, setShowLangDropdown] = useState(false);
-  const [activePolicy, setActivePolicy] = useState(null);
-
-  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
-  const isRTL = LANGUAGES.find(l => l.code === language)?.rtl || false;
-
-  useEffect(() => {
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-    document.documentElement.lang = language;
-    localStorage.setItem('app_language', language);
-  }, [language, isRTL]);
-
-  useEffect(() => {
-    localStorage.setItem('location_enabled', locationEnabled);
-  }, [locationEnabled]);
-
-  const filteredLanguages = LANGUAGES.filter(lang =>
-    lang.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    lang.native.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const selectedLanguage = LANGUAGES.find(l => l.code === language);
-
-  const handleLanguageChange = (langCode) => {
-    setLanguage(langCode);
-    setShowLangDropdown(false);
+  const handleReset = () => {
+    if (window.confirm("ARE YOU SURE? THIS WILL PURGE ALL SAVED DATA AND CONFIGURATIONS.")) {
+      localStorage.clear();
+      window.location.reload();
+    }
   };
 
   return (
-    <div style={{
-      fontFamily: "'Inter',system-ui,sans-serif",
-      direction: isRTL ? 'rtl' : 'ltr',
-      color: 'var(--text-main)'
-    }}>
-      <section style={{ marginBottom: 32 }}>
-        <div style={{ marginBottom: 16 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-main)', marginBottom: 4 }}>
-            {t.language}
-          </h2>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-            Select your preferred language
-          </p>
-        </div>
+    <div style={{ maxWidth: '1024px', margin: '0 auto', width: '100%' }}>
+      <header style={{ marginBottom: '48px' }}>
+        <h1 style={{ fontSize: '48px', fontWeight: 900, color: 'var(--on-surface)', tracking: '-0.04em', marginBottom: '8px', textTransform: 'uppercase' }}>System Configuration</h1>
+        <p style={{ color: 'var(--on-surface-variant)', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.14em' }}>Adjust environmental parameters and data retention</p>
+      </header>
 
-        <div style={{ position: 'relative' }}>
-          <button
-            onClick={() => setShowLangDropdown(!showLangDropdown)}
-            style={{
-              width: '100%',
-              padding: '14px 16px',
-              background: 'var(--bg-input)',
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              color: 'var(--text-main)',
-              fontSize: 14,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              transition: 'all 0.18s'
-            }}
-          >
-            <span>{selectedLanguage?.native} ({selectedLanguage?.name})</span>
-            {isRTL ? <Ic.ChevronLeft /> : <Ic.ChevronRight />}
-          </button>
-
-          {showLangDropdown && (
-            <div style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              right: 0,
-              marginTop: 8,
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              maxHeight: 300,
-              overflow: 'hidden',
-              boxShadow: 'var(--shadow)',
-              zIndex: 100
-            }}>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search languages..."
-                style={{
-                  width: '100%',
-                  padding: '12px 16px',
-                  background: 'none',
-                  border: 'none',
-                  borderBottom: '1px solid var(--border)',
-                  color: 'var(--text-main)',
-                  fontSize: 14,
-                  outline: 'none'
-                }}
-              />
-              <div style={{ maxHeight: 250, overflowY: 'auto' }}>
-                {filteredLanguages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => handleLanguageChange(lang.code)}
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      background: lang.code === language
-                        ? (darkMode ? 'rgba(0,98,255,0.2)' : 'rgba(0,98,255,0.1)')
-                        : 'transparent',
-                      border: 'none',
-                      color: 'var(--text-main)',
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      textAlign: isRTL ? 'right' : 'left',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      transition: 'all 0.18s'
-                    }}
-                  >
-                    <span>{lang.native}</span>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>{lang.name}</span>
-                  </button>
-                ))}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px', alignItems: 'start' }}>
+        {/* Settings Form Area */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', gridColumn: 'span 2' }}>
+          
+          {/* Appearance Section */}
+          <section className="card--glass" style={{ padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '8px', height: '100%', background: 'var(--primary-container)' }}></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <span className="material-symbols-outlined" style={{ color: 'var(--primary)' }}>palette</span>
+              <h2 style={{ fontSize: '14px', fontWeight: 900, color: 'var(--on-surface)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Appearance</h2>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--on-surface)', marginBottom: '4px' }}>Interface Theme</h3>
+                <p style={{ fontSize: '12px', color: 'var(--on-surface-variant)' }}>Switch between light and dark ambient modes</p>
+              </div>
+              <div style={{ display: 'flex', background: 'var(--surface-container-highest)', padding: '4px' }}>
+                <button 
+                  onClick={() => !darkMode && null} 
+                  disabled={!darkMode}
+                  style={{ 
+                    padding: '8px 16px', 
+                    background: !darkMode ? 'var(--primary)' : 'transparent', 
+                    color: !darkMode ? 'var(--on-primary)' : 'var(--on-surface-variant)',
+                    border: 'none', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' 
+                  }}
+                  onClick={darkMode ? toggleTheme : undefined}
+                >Light</button>
+                <button 
+                  onClick={darkMode ? undefined : toggleTheme}
+                  style={{ 
+                    padding: '8px 16px', 
+                    background: darkMode ? 'var(--primary)' : 'transparent', 
+                    color: darkMode ? 'var(--on-primary)' : 'var(--on-surface-variant)',
+                    border: 'none', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' 
+                  }}
+                >Dark</button>
               </div>
             </div>
-          )}
-        </div>
-      </section>
+          </section>
 
-      <section style={{ marginBottom: 32 }}>
-        <div style={{ marginBottom: 16 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-main)', marginBottom: 4 }}>
-            {t.appearance}
-          </h2>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-            Customize the app's appearance
-          </p>
-        </div>
-
-        <div style={{
-          background: 'var(--bg-surface)',
-          border: '1px solid var(--border)',
-          borderRadius: 12,
-          padding: 16,
-          boxShadow: 'var(--shadow)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-main)' }}>
-                {darkMode ? t.darkMode : t.lightMode}
+          {/* Units Section */}
+          <section className="card--glass" style={{ padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '8px', height: '100%', background: 'var(--primary-container)' }}></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <span className="material-symbols-outlined" style={{ color: 'var(--primary)' }}>thermostat</span>
+              <h2 style={{ fontSize: '14px', fontWeight: 900, color: 'var(--on-surface)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Measurement Units</h2>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--on-surface)', marginBottom: '4px' }}>Temperature Scale</h3>
+                <p style={{ fontSize: '12px', color: 'var(--on-surface-variant)' }}>Select primary thermal reading format</p>
               </div>
-              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-                {darkMode ? 'Dark theme enabled' : 'Light theme enabled'}
+              <div style={{ display: 'flex', background: 'var(--surface-container-highest)', padding: '4px' }}>
+                <button 
+                  onClick={() => setUnit('C')}
+                  style={{ 
+                    padding: '8px 16px', 
+                    background: unit === 'C' ? 'var(--primary)' : 'transparent', 
+                    color: unit === 'C' ? 'var(--on-primary)' : 'var(--on-surface-variant)', 
+                    border: 'none', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' 
+                  }}
+                >Celsius (°C)</button>
+                <button 
+                  onClick={() => setUnit('F')}
+                  style={{ 
+                    padding: '8px 16px', 
+                    background: unit === 'F' ? 'var(--primary)' : 'transparent', 
+                    color: unit === 'F' ? 'var(--on-primary)' : 'var(--on-surface-variant)', 
+                    border: 'none', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' 
+                  }}
+                >Fahrenheit (°F)</button>
               </div>
             </div>
-            <button
-              onClick={toggleTheme}
-              style={{
-                width: 52,
-                height: 28,
-                background: darkMode ? '#0062ff' : '#cbd5e1',
-                border: 'none',
-                borderRadius: 14,
-                cursor: 'pointer',
-                position: 'relative',
-                transition: 'all 0.3s'
-              }}
-            >
-              <div style={{
-                position: 'absolute',
-                top: 2,
-                [isRTL ? 'right' : 'left']: darkMode ? 26 : 2,
-                width: 24,
-                height: 24,
-                background: '#fff',
-                borderRadius: '50%',
-                transition: 'all 0.3s',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-              }} />
-            </button>
+          </section>
+
+          {/* Permissions Section */}
+          <section className="card--glass" style={{ padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '8px', height: '100%', background: 'var(--primary-container)' }}></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <span className="material-symbols-outlined" style={{ color: 'var(--primary)' }}>location_on</span>
+              <h2 style={{ fontSize: '14px', fontWeight: 900, color: 'var(--on-surface)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Location Privacy</h2>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--on-surface)', marginBottom: '4px' }}>Background Access</h3>
+                  <p style={{ fontSize: '12px', color: 'var(--on-surface-variant)' }}>Allow persistent tracking for passive alerts</p>
+                </div>
+                <div 
+                  onClick={() => setBackgroundAccess(!backgroundAccess)}
+                  style={{ 
+                    width: '44px', height: '24px', background: backgroundAccess ? 'var(--secondary)' : 'var(--surface-variant)', 
+                    padding: '2px', cursor: 'pointer', transition: 'background 0.3s ease', position: 'relative' 
+                  }}
+                >
+                  <div style={{ 
+                    width: '20px', height: '20px', background: '#fff', 
+                    transform: backgroundAccess ? 'translateX(20px)' : 'translateX(0)', 
+                    transition: 'transform 0.3s ease' 
+                  }}></div>
+                </div>
+              </div>
+              
+              <div style={{ height: '1px', background: 'var(--surface-container-highest)' }}></div>
+
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--on-surface)', marginBottom: '4px' }}>Precise Location</h3>
+                  <p style={{ fontSize: '12px', color: 'var(--on-surface-variant)' }}>Enable micro-climate targeting</p>
+                </div>
+                <div 
+                  onClick={() => setPreciseLocation(!preciseLocation)}
+                  style={{ 
+                    width: '44px', height: '24px', background: preciseLocation ? 'var(--secondary)' : 'var(--surface-variant)', 
+                    padding: '2px', cursor: 'pointer', transition: 'background 0.3s ease', position: 'relative' 
+                  }}
+                >
+                  <div style={{ 
+                    width: '20px', height: '20px', background: '#fff', 
+                    transform: preciseLocation ? 'translateX(20px)' : 'translateX(0)', 
+                    transition: 'transform 0.3s ease' 
+                  }}></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Danger Zone */}
+          <section style={{ background: 'var(--error-container)', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, width: '8px', height: '100%', background: 'var(--error)' }}></div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '32px', flexWrap: 'wrap' }}>
+              <div>
+                <h2 style={{ fontSize: '16px', fontWeight: 900, color: 'var(--on-error-container)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>System Reset</h2>
+                <p style={{ fontSize: '13px', color: 'var(--on-error-container)', opacity: 0.8, maxWidth: '400px' }}>Purge all local cache, saved architectural coordinates, and user preferences. This action is irreversible.</p>
+              </div>
+              <button 
+                onClick={handleReset}
+                style={{ background: 'var(--error)', color: 'var(--on-error)', border: 'none', padding: '12px 24px', fontWeight: 900, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', cursor: 'pointer' }}
+              >Reset All Data</button>
+            </div>
+          </section>
+        </div>
+
+        {/* Sidebar Info Slab */}
+        <aside style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+          <div className="card--glass" style={{ padding: '32px', color: 'var(--on-primary-container)', background: 'var(--primary-container)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '40px', marginBottom: '16px', display: 'block', color: 'var(--on-primary)' }}>info</span>
+            <h3 style={{ fontSize: '16px', fontWeight: 900, color: 'var(--on-primary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '24px' }}>System Status</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div>
+                <p style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.7, marginBottom: '4px' }}>Version</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: 'var(--on-primary)' }}>v4.2.0-stable</p>
+              </div>
+              <div>
+                <p style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.7, marginBottom: '4px' }}>Last Sync</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: 'var(--on-primary)' }}>Today, 10:28 AM</p>
+              </div>
+              <div>
+                <p style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.7, marginBottom: '4px' }}>Local Storage</p>
+                <p style={{ fontSize: '14px', fontWeight: 700, color: 'var(--on-primary)' }}>12.4 MB Used</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
 
-      <section style={{ marginBottom: 32 }}>
-        <div style={{ marginBottom: 16 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-main)', marginBottom: 4 }}>
-            {t.location}
-          </h2>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-            {t.locationDesc}
-          </p>
-        </div>
-
-        <div style={{
-          background: 'var(--bg-surface)',
-          border: '1px solid var(--border)',
-          borderRadius: 12,
-          padding: 16,
-          boxShadow: 'var(--shadow)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-main)' }}>
-                {locationEnabled ? t.locationEnabled : t.locationDisabled}
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-                {locationEnabled ? 'GPS and IP-based location enabled' : 'Manual city selection only'}
-              </div>
+          <div style={{ background: 'var(--surface-container-low)', padding: '24px' }}>
+            <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface)', marginBottom: '16px', borderBottom: '2px solid var(--surface-container-highest)', paddingBottom: '8px' }}>Need Assistance?</h3>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <button 
+                onClick={() => setView?.('privacy')}
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', background: 'transparent', border: 'none', borderBottom: '1px solid var(--surface-container-highest)', cursor: 'pointer', color: 'var(--secondary)', fontWeight: 700, fontSize: '13px' }}
+              >
+                Privacy Policy
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
+              </button>
+              <button 
+                onClick={() => setView?.('about')}
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--secondary)', fontWeight: 700, fontSize: '13px' }}
+              >
+                About Project
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
+              </button>
             </div>
-            <button
-              onClick={() => setLocationEnabled(!locationEnabled)}
-              style={{
-                width: 52,
-                height: 28,
-                background: locationEnabled ? '#0062ff' : '#cbd5e1',
-                border: 'none',
-                borderRadius: 14,
-                cursor: 'pointer',
-                position: 'relative',
-                transition: 'all 0.3s'
-              }}
-            >
-              <div style={{
-                position: 'absolute',
-                top: 2,
-                [isRTL ? 'right' : 'left']: locationEnabled ? 26 : 2,
-                width: 24,
-                height: 24,
-                background: '#fff',
-                borderRadius: '50%',
-                transition: 'all 0.3s',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-              }} />
-            </button>
           </div>
-        </div>
-      </section>
-
-      <section style={{ marginBottom: 32 }}>
-        <div style={{ marginBottom: 16 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-main)', marginBottom: 4 }}>
-            {t.learn}
-          </h2>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-            Learn more about our app
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <button
-            onClick={() => setActivePolicy('privacy')}
-            style={{
-              padding: '16px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              color: 'var(--text-main)',
-              fontSize: 14,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              transition: 'all 0.18s',
-              boxShadow: 'var(--shadow)'
-            }}>
-            <span>{t.privacy}</span>
-            {isRTL ? <Ic.ChevronLeft /> : <Ic.ChevronRight />}
-          </button>
-
-          <button
-            onClick={() => setActivePolicy('security')}
-            style={{
-              padding: '16px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              color: 'var(--text-main)',
-              fontSize: 14,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              transition: 'all 0.18s',
-              boxShadow: 'var(--shadow)'
-            }}>
-            <span>{t.security}</span>
-            {isRTL ? <Ic.ChevronLeft /> : <Ic.ChevronRight />}
-          </button>
-
-          <button
-            onClick={() => setActivePolicy('about')}
-            style={{
-              padding: '16px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              color: 'var(--text-main)',
-              fontSize: 14,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              transition: 'all 0.18s',
-              boxShadow: 'var(--shadow)'
-            }}>
-            <span>{t.about}</span>
-            {isRTL ? <Ic.ChevronLeft /> : <Ic.ChevronRight />}
-          </button>
-        </div>
-      </section>
-
-      {activePolicy && (
-        <PolicyModal
-          type={activePolicy}
-          darkMode={darkMode}
-          isRTL={isRTL}
-          onClose={() => setActivePolicy(null)}
-        />
-      )}
-    </div>
-  );
-}
-
-function PolicyModal({ type, darkMode, isRTL, onClose }) {
-  const titles = {
-    privacy: 'Privacy Policy',
-    security: 'Security Information',
-    about: 'About Weather Dashboard'
-  };
-
-  const content = {
-    privacy: [
-      'Your privacy is important to us. This app collects location data only to provide accurate weather forecasts.',
-      'We do not sell or share your personal data with third parties.',
-      'Location data is processed locally whenever possible and only sent to weather providers to fetch data for your current area.',
-      'You can disable location services at any time in the settings menu.'
-    ],
-    security: [
-      'We use industry-standard encryption to protect any data sent between your device and our servers.',
-      'Our API integrations use secure tokens and environment variables to prevent unauthorized access.',
-      'We regularly audit our dependencies to ensure no known vulnerabilities are present in the codebase.',
-      'The application runs in a sandbox environment within your browser.'
-    ],
-    about: [
-      'Weather Dashboard v2.0 - A premium weather experience.',
-      'Built with React, OpenWeatherMap API, and EmailJS.',
-      'Designed to provide beautiful, accurate, and fast weather updates globally.',
-      'Developed with a focus on UX/UI excellence and user privacy.'
-    ]
-  };
-
-  return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 10000,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'rgba(2, 6, 17, 0.9)', backdropFilter: 'blur(16px)',
-      padding: 20
-    }} onClick={onClose}>
-      <div
-        style={{
-          width: '100%', maxWidth: 500, background: 'var(--bg-surface)',
-          borderRadius: 24, padding: 32, position: 'relative',
-          border: '1px solid var(--border)',
-          boxShadow: 'var(--shadow)',
-          direction: isRTL ? 'rtl' : 'ltr',
-          textAlign: isRTL ? 'right' : 'left'
-        }}
-        onClick={e => e.stopPropagation()}
-      >
-        <button onClick={onClose} style={{
-          position: 'absolute', top: 20, right: isRTL ? 'auto' : 20, left: isRTL ? 20 : 'auto',
-          background: 'none', border: 'none', color: 'var(--text-dim)',
-          fontSize: 20, cursor: 'pointer'
-        }}>✕</button>
-
-        <h3 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-main)', marginBottom: 20 }}>
-          {titles[type]}
-        </h3>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {content[type].map((p, i) => (
-            <p key={i} style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--text-muted)' }}>
-              • {p}
-            </p>
-          ))}
-        </div>
-
-        <button onClick={onClose} style={{
-          marginTop: 32, width: '100%', padding: '14px',
-          background: '#0062ff', color: '#fff', border: 'none',
-          borderRadius: 14, fontWeight: 700, cursor: 'pointer',
-          boxShadow: '0 8px 24px rgba(0,98,255,0.3)'
-        }}>Close</button>
+        </aside>
       </div>
     </div>
   );

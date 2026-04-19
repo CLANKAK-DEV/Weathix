@@ -11,7 +11,11 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('dark_mode');
-    return saved !== 'false';
+    return saved === 'true';
+  });
+
+  const [unit, setUnit] = useState(() => {
+    return localStorage.getItem('temp_unit') || 'C';
   });
 
   useEffect(() => {
@@ -19,10 +23,14 @@ export const ThemeProvider = ({ children }) => {
     document.body.classList.toggle('dark-mode', darkMode);
   }, [darkMode]);
 
+  useEffect(() => {
+    localStorage.setItem('temp_unit', unit);
+  }, [unit]);
+
   const toggleTheme = () => setDarkMode(!darkMode);
 
   return (
-    <ThemeContext.Provider value={{ darkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ darkMode, toggleTheme, unit, setUnit }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -104,102 +104,39 @@ weather-app/
 
 ---
 
-## 3. Color System (derived from the logo)
+## 3. Design System: Architectural Ledger
 
-The entire interface is tinted from the two logo colors. Every token lives in
-`src/index.css` as a CSS variable — change it there and the whole app follows.
+The interface follows a strict, zero-radius industrial aesthetic. It is built on a "slab" metaphor where elements are flat, high-contrast panels with sharp edges and uppercase labels.
 
-### Brand
+### Architectural Palette
 
 | Token                  | Hex       | Role                                    |
 | ---------------------- | --------- | --------------------------------------- |
-| `--logo-blue`          | `#0062ff` | Primary. Buttons, focus rings, links.   |
-| `--logo-blue-soft`     | `#3b9eff` | Rain, daylight accents, hover glow.     |
-| `--logo-blue-deep`     | `#0052d9` | Gradients, pressed states.              |
-| `--logo-orange`        | `#ff9d00` | Sun, UV, "today", Support accent.       |
-| `--logo-orange-soft`   | `#ffb84d` | Soft sunrise highlights.                |
-| `--logo-orange-deep`   | `#e67e00` | Sunset endings of gradients.            |
+| `--primary`            | `#061b0e` | Deep Forest. Sidebar, main headers.     |
+| `--primary-container`  | `#1b3022` | Dark Sage. Hero backgrounds, active navigation. |
+| `--on-primary`         | `#ffffff` | Absolute White. High-contrast text on primary. |
+| `--secondary`          | `#45645e` | Muted Moss. Accents, secondary metrics. |
+| `--surface`            | `#ffffff` | Pure White. Main content slabs.         |
+| `--surface-container`  | `#f8f9f8` | Off-white. Subtle background separation. |
+| `--outline`            | `#000000` | Black. Borders, hair-line dividers.    |
 
-### Gradients
+### Typography
 
-| Token           | Value                                                          | Use                        |
-| --------------- | -------------------------------------------------------------- | -------------------------- |
-| `--grad-brand`  | `linear-gradient(135deg,#0062ff 0%,#3b9eff 55%,#ff9d00 100%)`  | Hero pieces, FAB           |
-| `--grad-blue`   | `linear-gradient(135deg,#0062ff 0%,#0052d9 100%)`              | Primary buttons            |
-| `--grad-orange` | `linear-gradient(135deg,#ff9d00 0%,#ff7a00 100%)`              | Sunny weather cards        |
-| `--grad-sky`    | `linear-gradient(145deg,#0a1628 0%,#0f2347 45%,#1a3560 100%)`  | Dark hero backdrop         |
-
-### Surfaces (dark theme)
-
-| Token             | Hex / rgba                      | Role                      |
-| ----------------- | ------------------------------- | ------------------------- |
-| `--bg-app`        | `#050a14`                       | App background            |
-| `--bg-sidebar`    | `#0a1628`                       | Sidebar                   |
-| `--bg-surface`    | `#0a1628`                       | Solid card                |
-| `--bg-elevated`   | `#0f2141`                       | Raised card / popover     |
-| `--bg-card`       | `rgba(10,22,40,0.78)`           | Glass card                |
-| `--bg-input`      | `rgba(59,158,255,0.07)`         | Inputs, subtle fills      |
-| `--bg-hover`      | `rgba(59,158,255,0.10)`         | Hover state               |
-| `--glass-bg`      | `rgba(10,22,40,0.72)`           | Blurred glass panel       |
-
-### Surfaces (light theme)
-
-| Token           | Hex / rgba                | Role              |
-| --------------- | ------------------------- | ----------------- |
-| `--bg-app`      | `#f4f7fc`                 | App background    |
-| `--bg-sidebar`  | `#ffffff`                 | Sidebar           |
-| `--bg-card`     | `rgba(255,255,255,0.88)`  | Glass card        |
-| `--bg-input`    | `rgba(0,98,255,0.05)`     | Inputs            |
-
-### Text & borders
-
-| Token             | Dark                     | Light                    |
-| ----------------- | ------------------------ | ------------------------ |
-| `--text-main`     | `#eef5ff`                | `#0f1c36`                |
-| `--text-muted`    | `#9db2d4`                | `#4a5a7a`                |
-| `--text-dim`      | `#5e759a`                | `#8798b5`                |
-| `--border`        | `rgba(59,158,255,0.12)`  | `rgba(0,98,255,0.10)`    |
-| `--border-strong` | `rgba(59,158,255,0.30)`  | `rgba(0,98,255,0.22)`    |
-
-### Shadows
-
-| Token           | Dark                            | Light                         |
-| --------------- | ------------------------------- | ----------------------------- |
-| `--shadow-sm`   | `0 4px 14px rgba(0,0,0,0.30)`   | `0 4px 14px rgba(0,98,255,0.06)` |
-| `--shadow`      | `0 14px 40px rgba(0,0,0,0.40)`  | `0 10px 32px rgba(0,98,255,0.09)` |
-| `--shadow-lg`   | `0 24px 70px rgba(0,0,0,0.55)`  | `0 20px 60px rgba(0,98,255,0.14)` |
-
-### Semantic colors (used sparingly, not tokens)
-
-| Meaning  | Hex       | Where                               |
-| -------- | --------- | ----------------------------------- |
-| Success  | `#22c55e` | Form success, "online" dot          |
-| Error    | `#ef4444` | Error banners, form errors          |
-| Warning  | `#ff9d00` | UV high, out-of-range notices       |
+- **Primary Font**: Inter (Weights 400-900)
+- **Labels**: Uppercase, letter-spacing: 0.12em - 0.14em.
+- **Precision**: Numbers use bold weights with tight tracking (-0.04em).
 
 ---
 
-## 4. Utility Classes
-
-Defined in `src/index.css`. Compose these instead of writing bespoke inline
-styles for common patterns.
+## 4. Architectural Patterns
 
 | Class                | Effect                                                       |
 | -------------------- | ------------------------------------------------------------ |
-| `.card`              | Glass card with brand border + shadow + rounded corners      |
-| `.btn-primary`       | Blue gradient button, lifts on hover                         |
-| `.btn-ghost`         | Tonal secondary button                                       |
-| `.chip`              | Pill for meta/tags                                           |
-| `.text-brand`        | Logo-blue text                                               |
-| `.text-sun`          | Logo-orange text                                             |
-| `.text-muted`        | Muted body text                                              |
-| `.bg-brand-gradient` | Blue → soft blue → orange                                    |
-| `.bg-blue-gradient`  | Blue → deep blue                                             |
-| `.bg-sun-gradient`   | Orange → deep orange                                         |
-| `.fade-in`           | 0.45s opacity + 10px rise                                    |
-| `.fade-up`           | 0.55s opacity + 24px rise (larger entry)                     |
-| `.brand-pulse`       | Infinite brand-colored pulse halo                            |
-| `.spin`              | 0.8s rotate (for loading indicators)                         |
+| `.slab`              | Flat container with zero radius and 1px outline.             |
+| `.slab-primary`      | Dark forest green container for high-priority info.          |
+| `.label-uppercase`   | Standardized small-caps labelling system.                    |
+| `.fade-up`           | Structural entry animation (14px rise).                      |
+| `.data-grid`         | Strict 1px-gap grid system for metrics.                      |
 
 ### Example
 
@@ -381,3 +318,38 @@ npm run build     # production bundle in build/
 - **Services return safe defaults.** Every network call in `src/services` has a
   `try/catch` and returns `null` or `[]` on failure — the UI never crashes on a
   transient error.
+
+---
+
+## 7. Report Summary & Project Specifications
+*Use this section for generating technical reports or academic documentation (Word/PDF).*
+
+### Executive Summary
+**Weathix** is an advanced meteorological dashboard that leverages modern web technologies to provide precision weather data through an "Architectural Ledger" design language. The system focuses on high-performance data visualization, user privacy (via local-only storage), and AI-driven insights.
+
+### System Architecture
+- **Paradigm**: MVVM (Model-View-ViewModel).
+- **Frontend State**: React Hooks + Context API.
+- **Data Persistence**: Browser LocalStorage (Zero Server Dependency).
+- **Communication**: RESTful APIs via Axios with custom retry logic.
+
+### Technical Specification Table
+| Category | Specification |
+| :--- | :--- |
+| **Framework** | React 18 (Functional Components) |
+| **Style Architecture** | Semantic CSS Variables + CSS Grid/Flexbox |
+| **Mapping Engine** | Leaflet.js with custom TileLayer integration |
+| **AI Processing** | NVIDIA Llama-3.1-405B via Venice AI API |
+| **Weather Engine** | Open-Meteo V2 (WMO Standard) |
+| **Language Support** | Dynamic (Global Localization) |
+
+### Core Functional Modules
+1. **Meteorological Processor**: Orchestrates real-time weather data fetching, unit conversion (Celsius/Fahrenheit), and coordinate translation.
+2. **Geospatial Engine**: Manages interactive maps with atmospheric overlays (precipitation, wind speed, cloud cover).
+3. **Intelligence Layer**: A context-aware AI assistant that interprets weather data into actionable advice.
+4. **Vault Module**: Manages encrypted-at-rest (browser) user data, including saved cities and session preferences.
+
+---
+---
+*WEATHIX — Precision Engineered for the Modern Web.*  
+**Powered by [Lahoucine Chouker](https://www.lahoucinechouker.online/)**

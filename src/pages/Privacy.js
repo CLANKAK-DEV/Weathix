@@ -1,15 +1,13 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Ic } from '../utils/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
-function Privacy() {
-  const navigate = useNavigate();
+function Privacy({ setView }) {
   const { darkMode } = useTheme();
 
   const containerStyle = {
     minHeight: '100vh',
-    background: darkMode ? 'linear-gradient(140deg,#050a14 0%,#0a1e3e 45%,#0a1628 100%)' : '#f8fafc',
+    background: 'transparent', // Make it transparent to use Dashboard background
     fontFamily: "'Inter',system-ui,sans-serif",
     color: darkMode ? '#e2e8f0' : '#1e293b'
   };
@@ -21,24 +19,22 @@ function Privacy() {
       `}</style>
 
       <header style={{
-        padding: '20px 28px',
-        background: darkMode ? 'rgba(5,10,20,0.95)' : 'rgba(255,255,255,0.95)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: `1px solid ${darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
+        padding: '24px 0',
+        borderBottom: `1px solid var(--outline-variant)`,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: '32px'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <button
-            onClick={() => navigate('/settings')}
+            onClick={() => setView?.('settings')}
             style={{
-              background: darkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-              border: `1px solid ${darkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'}`,
-              color: darkMode ? '#cbd5e1' : '#475569',
-              width: 36,
-              height: 36,
-              borderRadius: 8,
+              background: 'var(--surface-container-low)',
+              border: `1px solid var(--outline-variant)`,
+              color: 'var(--on-surface)',
+              width: 40,
+              height: 40,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -46,11 +42,11 @@ function Privacy() {
               transition: 'all 0.18s'
             }}
           >
-            <Ic.ChevronLeft />
+            <span className="material-symbols-outlined">arrow_back</span>
           </button>
           <div>
-            <h1 style={{ fontSize: 20, fontWeight: 800, color: darkMode ? '#f1f5f9' : '#1e293b' }}>Privacy Policy</h1>
-            <p style={{ fontSize: 12, color: darkMode ? '#64748b' : '#64748b' }}>Last updated: January 2026</p>
+            <h1 style={{ fontSize: 32, fontWeight: 900, color: 'var(--on-surface)', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Privacy Policy</h1>
+            <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--outline)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Data Governance & Security Protocols</p>
           </div>
         </div>
       </header>

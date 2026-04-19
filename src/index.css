@@ -1,76 +1,161 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,100..700,0..1,-50..200&display=swap');
 
 /* =====================================================================
-   WEATHIX — SINGLE STYLESHEET
-   A logo-driven design system. The palette is derived from the app logo:
-     Primary Blue  #0062ff  (sky / cloud)
-     Accent Orange #ff9d00  (sun)
-   Everything else — surfaces, borders, shadows — is tinted from these two.
+   WEATHIX — ARCHITECTURAL LEDGER
+   A flat, sharp-edged design system. Palette derived from the reference
+   swatches: dark forest green primary, sage secondary, slate tertiary.
+     Primary   #1b3022   (deep architectural green)
+     Secondary #84a59d   (sage)
+     Tertiary  #2f3e46   (slate)
+     Neutral   #f7f9f7   (paper)
+   No rounded corners. Labels are UPPERCASE with wide letter-spacing.
    ===================================================================== */
 
 /* ---------- 1. Design tokens ----------------------------------------- */
 
 :root {
-  --logo-blue:        #0062ff;
-  --logo-blue-soft:   #3b9eff;
-  --logo-blue-deep:   #0052d9;
-  --logo-orange:      #ff9d00;
-  --logo-orange-soft: #ffb84d;
-  --logo-orange-deep: #e67e00;
+  /* Brand */
+  --primary:             #061b0e;
+  --primary-container:   #1b3022;
+  --on-primary:          #ffffff;
+  --on-primary-container:#819986;
+  --primary-fixed:       #d0e9d4;
+  --primary-fixed-dim:   #b4cdb8;
+  --inverse-primary:     #b4cdb8;
 
-  --logo-blue-glow:   rgba(0, 98, 255, 0.35);
-  --logo-orange-glow: rgba(255, 157, 0, 0.35);
+  --secondary:           #45645e;
+  --secondary-container: #c7eae1;
+  --on-secondary:        #ffffff;
+  --on-secondary-container:#4b6a63;
+  --secondary-fixed:     #c7eae1;
+  --secondary-fixed-dim: #accec5;
 
-  --grad-brand:  linear-gradient(135deg, #0062ff 0%, #3b9eff 55%, #ff9d00 100%);
-  --grad-blue:   linear-gradient(135deg, #0062ff 0%, #0052d9 100%);
-  --grad-orange: linear-gradient(135deg, #ff9d00 0%, #ff7a00 100%);
-  --grad-sky:    linear-gradient(145deg, #0a1628 0%, #0f2347 45%, #1a3560 100%);
+  --tertiary:            #0a1921;
+  --tertiary-container:  #1f2e36;
+  --on-tertiary:         #ffffff;
+  --on-tertiary-container:#86969f;
+  --tertiary-fixed:      #d5e5ef;
+  --tertiary-fixed-dim:  #b9c9d3;
 
-  --radius-sm:   8px;
-  --radius-md:   12px;
-  --radius-lg:   18px;
-  --radius-xl:   24px;
+  --error:               #ba1a1a;
+  --on-error:            #ffffff;
+  --error-container:     #ffdad6;
+  --on-error-container:  #93000a;
 
-  /* Light theme (default) */
-  --bg-app:        #f4f7fc;
-  --bg-sidebar:    #ffffff;
-  --bg-card:       rgba(255, 255, 255, 0.88);
-  --bg-surface:    #ffffff;
-  --bg-elevated:   #ffffff;
-  --bg-input:      rgba(0, 98, 255, 0.05);
-  --bg-hover:      rgba(0, 98, 255, 0.07);
-  --border:        rgba(0, 98, 255, 0.10);
-  --border-strong: rgba(0, 98, 255, 0.22);
-  --text-main:     #0f1c36;
-  --text-muted:    #4a5a7a;
-  --text-dim:      #8798b5;
-  --glass-bg:      rgba(255, 255, 255, 0.72);
-  --glass-border:  rgba(0, 98, 255, 0.08);
-  --shadow-sm:     0 4px 14px rgba(0, 98, 255, 0.06);
-  --shadow:        0 10px 32px rgba(0, 98, 255, 0.09);
-  --shadow-lg:     0 20px 60px rgba(0, 98, 255, 0.14);
-  --scrollbar-thumb: rgba(0, 98, 255, 0.22);
+  /* Surfaces — light theme */
+  --background:                #f8faf8;
+  --on-background:             #191c1b;
+  --surface:                   #f8faf8;
+  --on-surface:                #191c1b;
+  --surface-variant:           #e1e3e1;
+  --on-surface-variant:        #434843;
+  --surface-container-lowest:  #ffffff;
+  --surface-container-low:     #f2f4f2;
+  --surface-container:         #eceeec;
+  --surface-container-high:    #e6e9e7;
+  --surface-container-highest: #e1e3e1;
+  --surface-dim:               #d8dad9;
+  --surface-bright:            #f8faf8;
+  --inverse-surface:           #2e3130;
+  --inverse-on-surface:        #eff1ef;
+  --outline:                   #737973;
+  --outline-variant:           #c3c8c1;
+
+  /* Semantic legacy aliases (kept so older inline refs keep working) */
+  --text-main:     var(--on-surface);
+  --text-muted:    var(--on-surface-variant);
+  --text-dim:      var(--outline);
+  --bg-app:        var(--background);
+  --bg-sidebar:    var(--surface-container-low);
+  --bg-surface:    var(--surface);
+  --bg-elevated:   var(--surface-container-high);
+  --bg-card:       var(--surface-container-low);
+  --bg-input:      var(--surface-container-highest);
+  --bg-hover:      var(--surface-container-high);
+  --border:        var(--outline-variant);
+  --border-strong: var(--outline);
+  --glass-bg:      rgba(248,250,248,0.86);
+  --glass-border:  var(--outline-variant);
+
+  /* Legacy brand aliases → remapped to new palette */
+  --logo-blue:        var(--primary-container);
+  --logo-blue-soft:   var(--secondary);
+  --logo-blue-deep:   var(--primary);
+  --logo-blue-glow:   rgba(27,48,34,0.25);
+  --logo-orange:      var(--secondary);
+  --logo-orange-soft: var(--secondary-fixed-dim);
+  --logo-orange-deep: var(--tertiary);
+  --logo-orange-glow: rgba(69,100,94,0.25);
+
+  /* Shadows — reserved, used sparingly (flat design) */
+  --shadow-sm:   0 2px 6px rgba(25,28,27,0.04);
+  --shadow:      0 4px 14px rgba(25,28,27,0.06);
+  --shadow-lg:   0 12px 32px rgba(25,28,27,0.10);
+
+  /* Gradients */
+  --grad-brand:  linear-gradient(135deg, var(--primary-container) 0%, var(--secondary) 100%);
+  --grad-blue:   linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  --grad-orange: linear-gradient(135deg, var(--secondary) 0%, var(--tertiary) 100%);
+  --grad-sky:    linear-gradient(145deg, var(--primary-container) 0%, var(--tertiary-container) 50%, var(--tertiary) 100%);
+
+  /* Radii — kept at 0 for architectural feel */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+
+  --scrollbar-thumb: var(--outline-variant);
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-mode {
-  --bg-app:        #050a14;
-  --bg-sidebar:    #0a1628;
-  --bg-card:       rgba(10, 22, 40, 0.78);
-  --bg-surface:    #0a1628;
-  --bg-elevated:   #0f2141;
-  --bg-input:      rgba(59, 158, 255, 0.07);
-  --bg-hover:      rgba(59, 158, 255, 0.10);
-  --border:        rgba(59, 158, 255, 0.12);
-  --border-strong: rgba(59, 158, 255, 0.30);
-  --text-main:     #eef5ff;
-  --text-muted:    #9db2d4;
-  --text-dim:      #5e759a;
-  --glass-bg:      rgba(10, 22, 40, 0.72);
-  --glass-border:  rgba(59, 158, 255, 0.10);
-  --shadow-sm:     0 4px 14px rgba(0, 0, 0, 0.30);
-  --shadow:        0 14px 40px rgba(0, 0, 0, 0.40);
-  --shadow-lg:     0 24px 70px rgba(0, 0, 0, 0.55);
-  --scrollbar-thumb: rgba(59, 158, 255, 0.22);
+  /* Core Palette Overrides — Sophisticated Obsidian & Sage */
+  --background:                #0d0f0e; 
+  --on-background:             #e2e3e1;
+  --surface:                   #0d0f0e;
+  --on-surface:                #e2e3e1;
+  --surface-variant:           #1a211d; 
+  --on-surface-variant:        #8da192; 
+  --surface-container-lowest:  #080a09;
+  --surface-container-low:     #121614;
+  --surface-container:         #181d1b;
+  --surface-container-high:    #202623;
+  --surface-container-highest: #2b332e; 
+  --surface-dim:               #0d0f0e;
+  --surface-bright:            #1a211d;
+  --inverse-surface:           #e2e3e1;
+  --inverse-on-surface:        #121614;
+  --outline:                   #3d4d42; 
+  --outline-variant:           #232b26;
+
+  --primary:             #a3c9b1;
+  --on-primary:          #ffffff;
+  --primary-container:   #1a2e22;
+  --on-primary-container:#c9e6d4;
+
+  --secondary:           #8fa397;
+  --on-secondary:        #ffffff;
+  --secondary-container: #232b26;
+  --on-secondary-container:#cce0d4;
+
+  /* Explicitly re-map semantic aliases */
+  --text-main:     var(--on-surface);
+  --text-muted:    var(--on-surface-variant);
+  --text-dim:      var(--outline);
+  --bg-app:        var(--background);
+  --bg-sidebar:    var(--surface-container-low);
+  --bg-surface:    var(--surface);
+  --bg-elevated:   var(--surface-container-high);
+  --bg-card:       var(--surface-container-low);
+  --bg-input:      var(--surface-container-highest);
+  --bg-hover:      var(--surface-container-high);
+  --border:        var(--outline-variant);
+  --border-strong: var(--outline);
+  --glass-bg:      rgba(13, 15, 14, 0.75);
+  --glass-border:  rgba(255, 255, 255, 0.05);
+
+  --scrollbar-thumb: var(--outline);
 }
 
 /* ---------- 2. Base reset -------------------------------------------- */
@@ -79,131 +164,293 @@ body.dark-mode {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 0;
+  transition: var(--transition-smooth);
 }
 
 html, body, #root {
   height: 100%;
   width: 100%;
   overflow: hidden;
+  background: var(--background);
+  color: var(--on-background);
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(141, 161, 146, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(26, 46, 34, 0.05) 0%, transparent 50%);
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--bg-app);
-  color: var(--text-main);
+  background: var(--background);
+  color: var(--on-background);
 }
 
 button              { font-family: inherit; border: none; background: none; cursor: pointer; }
 input, textarea, select { font-family: inherit; }
 
-::selection      { background: var(--logo-blue-glow); color: var(--text-main); }
-::-moz-selection { background: var(--logo-blue-glow); color: var(--text-main); }
+a { color: inherit; text-decoration: none; }
+
+::selection      { background: var(--primary-container); color: var(--on-primary); }
+::-moz-selection { background: var(--primary-container); color: var(--on-primary); }
 
 :focus-visible {
-  outline: 2px solid var(--logo-blue);
+  outline: 2px solid var(--primary-container);
   outline-offset: 2px;
-  border-radius: 6px;
 }
 
 /* ---------- 3. Scrollbars -------------------------------------------- */
 
 ::-webkit-scrollbar         { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track   { background: transparent; }
-::-webkit-scrollbar-thumb   { background: var(--scrollbar-thumb); border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: var(--logo-blue-soft); }
+::-webkit-scrollbar-thumb   { background: var(--scrollbar-thumb); }
+::-webkit-scrollbar-thumb:hover { background: var(--outline); }
 
-/* ---------- 4. Leaflet map overrides --------------------------------- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* ---------- 4. Material Symbols --------------------------------------- */
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+
+/* ---------- 5. Leaflet map overrides --------------------------------- */
 
 .leaflet-container {
-  background: var(--bg-app) !important;
+  background: var(--surface-container-low) !important;
   font-family: 'Inter', sans-serif;
 }
 .leaflet-popup-content-wrapper {
-  background: var(--bg-surface);
-  color: var(--text-main);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
   box-shadow: var(--shadow);
+  border-radius: 0 !important;
 }
-.leaflet-popup-tip { background: var(--bg-surface); }
+.leaflet-popup-tip { background: var(--surface); }
 .leaflet-control-zoom a {
-  background: var(--bg-surface) !important;
-  color: var(--text-main) !important;
-  border-color: var(--border) !important;
+  background: var(--surface) !important;
+  color: var(--on-surface) !important;
+  border-color: var(--outline-variant) !important;
+  border-radius: 0 !important;
 }
 .leaflet-control-zoom a:hover {
-  background: var(--bg-hover) !important;
-  color: var(--logo-blue) !important;
+  background: var(--surface-container-high) !important;
+  color: var(--primary-container) !important;
 }
 
-/* ---------- 5. Animations -------------------------------------------- */
+/* ---------- 6. Animations -------------------------------------------- */
 
-@keyframes spin       { to { transform: rotate(360deg); } }
-@keyframes fadeIn     { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeUp     { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pulseGlow  { 0%, 100% { box-shadow: 0 0 0 0 var(--logo-blue-glow); } 50% { box-shadow: 0 0 0 10px rgba(0, 98, 255, 0); } }
+@keyframes spin     { to { transform: rotate(360deg); } }
+@keyframes fadeIn   { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slabIn   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-.fade-in     { animation: fadeIn  0.45s ease forwards; }
-.fade-up     { animation: fadeUp  0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.brand-pulse { animation: pulseGlow 2.2s ease-in-out infinite; }
-.spin        { animation: spin 0.8s linear infinite; }
+.fade-in { animation: fadeIn 0.35s ease forwards; }
+.fade-up { animation: fadeUp 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.slab-in { animation: slabIn 0.35s ease both; }
+.spin    { animation: spin 0.8s linear infinite; }
+.brand-pulse { animation: none; }
 
-/* ---------- 6. Utility classes --------------------------------------- */
+/* ---------- 7. Typographic utilities --------------------------------- */
 
-.text-brand        { color: var(--logo-blue); }
-.text-sun          { color: var(--logo-orange); }
-.text-muted        { color: var(--text-muted); }
+.label-xs {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--outline);
+}
+.label-sm {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--on-surface-variant);
+}
+.headline-xl {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--on-surface);
+}
+.headline-lg {
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--on-surface);
+}
 
+.text-primary   { color: var(--primary-container); }
+.text-secondary { color: var(--secondary); }
+.text-outline   { color: var(--outline); }
+.text-muted     { color: var(--on-surface-variant); }
+
+/* Legacy aliases */
+.text-brand { color: var(--primary-container); }
+.text-sun   { color: var(--secondary); }
+
+/* ---------- 8. Surfaces / slabs --------------------------------------- */
+
+.slab {
+  background: var(--surface-container-low);
+  padding: 2rem;
+  position: relative;
+  border: 1px solid var(--outline-variant);
+}
+.slab--glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+.slab--primary {
+  background: var(--primary-container);
+  color: var(--on-primary);
+}
+.slab--accent {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+}
+.slab--raised {
+  background: var(--surface-container-lowest);
+  border-top: 8px solid var(--surface-container-low);
+}
+
+.card {
+  background: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card:hover {
+  border-color: var(--outline);
+  background: var(--surface-container);
+}
+.card--glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: var(--outline-variant);
+  opacity: 0.4;
+}
+
+/* ---------- 9. Buttons ----------------------------------------------- */
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s ease;
+}
+.btn-primary:hover    { background: var(--primary-container); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-ghost {
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  padding: 10px 16px;
+  border: 1px solid var(--outline-variant);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.btn-ghost:hover { background: var(--surface-container-high); border-color: var(--outline); }
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
+}
+.btn-icon:hover { background: var(--surface-container-high); }
+
+/* Legacy gradient helpers */
 .bg-brand-gradient { background: var(--grad-brand); }
 .bg-blue-gradient  { background: var(--grad-blue); }
 .bg-sun-gradient   { background: var(--grad-orange); }
 
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-}
-
-.btn-primary {
-  background: var(--grad-blue);
-  color: #fff;
-  padding: 11px 20px;
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.1px;
-  box-shadow: 0 8px 24px rgba(0, 98, 255, 0.28);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-.btn-primary:hover  { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(0, 98, 255, 0.35); }
-.btn-primary:active { transform: translateY(0); }
-
-.btn-ghost {
-  background: var(--bg-input);
-  color: var(--text-main);
-  padding: 10px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  font-weight: 600;
-  font-size: 13px;
-  transition: background 0.15s ease, border-color 0.15s ease;
-}
-.btn-ghost:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+/* ---------- 10. Chips / tags ----------------------------------------- */
 
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  border-radius: 999px;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+  background: var(--surface-container-highest);
+  color: var(--on-surface-variant);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ---------- 11. Nav primitives --------------------------------------- */
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 12px 16px;
+  color: var(--secondary);
   font-size: 11px;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: background 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+}
+.nav-item:hover {
+  background: var(--secondary-container);
+  color: var(--primary-container);
+}
+.nav-item.active {
+  background: var(--primary-container);
+  color: var(--on-primary);
+  font-weight: 700;
+}
+body.dark-mode .nav-item.active {
+  background: var(--primary);
+  color: var(--on-primary);
 }

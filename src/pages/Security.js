@@ -9,7 +9,7 @@ function Security() {
 
   const containerStyle = {
     minHeight: '100vh',
-    background: darkMode ? 'linear-gradient(140deg,#050a14 0%,#0a1e3e 45%,#0a1628 100%)' : '#f8fafc',
+    background: darkMode ? 'linear-gradient(140deg,#0e110f 0%,#0a1e3e 45%,#1a1d1a 100%)' : '#f8fafc',
     fontFamily: "'Inter',system-ui,sans-serif",
     color: darkMode ? '#e2e8f0' : '#1e293b'
   };

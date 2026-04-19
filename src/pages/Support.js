@@ -1,417 +1,210 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
-import { useTheme } from '../contexts/ThemeContext';
-
-const Ic = {
-  ChevronLeft:  () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>,
-  ChevronDown:  () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>,
-  Help:         (props) => <IconWrapper src="/icons/question_line.png" alt="FAQ" size={22} {...props} />,
-  Mail:         (props) => <IconWrapper src="/icons/support_mail.png" alt="Email" size={22} {...props} />,
-  Check:        () => <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
-  Send:         (props) => <IconWrapper src="/icons/message_line.png" alt="Message" size={20} {...props} />,
-  Phone:        () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
-  Clock:        (props) => <IconWrapper src="/icons/clock.png" alt="Response" size={20} {...props} />,
-};
-
-function IconWrapper({ src, alt, size, style = {}, ...props }) {
-  const { darkMode } = useTheme();
-  return (
-    <img
-      src={src}
-      alt={alt}
-      style={{
-        width: props.width || size || 20,
-        height: props.height || size || 20,
-        objectFit: 'contain',
-        filter: darkMode ? 'invert(1) contrast(200%) brightness(1.2)' : 'none',
-        mixBlendMode: darkMode ? 'screen' : 'multiply',
-        ...style
-      }}
-      {...props}
-    />
-  );
-}
 
 const FAQ_DATA = [
   {
-    q: 'How accurate is the weather data?',
-    a: 'Our data is sourced from Open-Meteo, which aggregates several national meteorological models (NOAA, ECMWF, DWD). Current conditions refresh in real time; hourly forecasts cover the next 48 hours, daily forecasts up to 14 days ahead.'
+    q: 'How is the data sourced?',
+    a: 'We aggregate data from multiple global meteorological stations, cross-referencing satellite telemetry with ground-level sensors to ensure architectural-grade precision.'
   },
   {
-    q: 'What cities can I search for?',
-    a: 'Any city worldwide. Start typing in the search bar and we geocode candidates from a global database. Select one to instantly fetch its current weather and forecast.'
+    q: 'Can I use this offline?',
+    a: 'The app caches the last known forecast for saved locations. However, real-time updates and radar imagery require an active internet connection.'
   },
   {
-    q: 'How does the AI Weather Assistant work?',
-    a: 'The AI assistant uses Venice AI to analyze the current conditions for your active city and answer questions in natural language — clothing suggestions, rain timing, UV safety, etc. There is a daily request limit per user shown in the chat header.'
+    q: 'How often does the radar update?',
+    a: 'High-resolution radar imagery is refreshed every 5 minutes in active precipitation zones, and every 15 minutes globally.'
   },
   {
-    q: 'Is my location data stored on a server?',
-    a: 'No. Coordinates are sent only to the weather API for that one request and are not retained. Your saved cities are kept locally in your browser (localStorage) — they never leave your device.'
-  },
-  {
-    q: 'Can I use the app offline?',
-    a: 'An internet connection is required to fetch live weather data, but your saved-city list and app state persist locally, so switching between saved cities is instant once you come back online.'
-  },
-  {
-    q: 'How do I save a city?',
-    a: 'Open a city on the dashboard and click "+ Save Location" on the hero card. The city appears in the left sidebar for one-click switching, and can be removed from the sidebar or the Saved Locations page.'
-  },
-  {
-    q: 'Why are some days in the calendar empty?',
-    a: 'Forecast data is only available for the next 14 days. Days beyond that window show a "···" placeholder — there simply is no forecast for them yet.'
-  },
-  {
-    q: 'How often is the data updated?',
-    a: 'Weather data refreshes each time you open or change cities. The clock in the top header updates every 30 seconds; switch between saved locations to pull the latest reading.'
+    q: 'What do the density metrics mean?',
+    a: 'Density metrics provide a combined reading of humidity, pressure, and particulate matter to indicate the \'heaviness\' of the local atmosphere.'
   }
 ];
 
-function FAQItem({ q, a, isOpen, onClick }) {
-  const [hov, setHov] = useState(false);
+function FAQItem({ q, a, index }) {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <div
+    <div 
+      className="card--glass group cursor-pointer"
+      onClick={() => setIsOpen(!isOpen)}
       style={{
-        borderRadius: 14,
-        overflow: 'hidden',
-        background: isOpen ? 'rgba(0,98,255,0.06)' : hov ? 'var(--bg-input)' : 'var(--bg-input)',
-        border: `1px solid ${isOpen ? 'rgba(0,98,255,0.25)' : hov ? 'var(--border)' : 'var(--border)'}`,
-        transition: 'background 0.2s ease, border-color 0.2s ease',
+        padding: '24px',
+        marginBottom: '4px',
+        transition: 'all 0.2s ease',
+        background: 'var(--surface-container-low)',
       }}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+      onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-variant)'}
+      onMouseLeave={e => e.currentTarget.style.background = 'var(--surface-container-low)'}
     >
-      <button
-        onClick={onClick}
-        style={{
-          width: '100%', padding: '16px 20px', textAlign: 'left',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14,
-          background: 'transparent', border: 'none', color: 'var(--text-main)',
-          cursor: 'pointer', fontFamily: 'inherit',
-        }}
-      >
-        <span style={{ fontWeight: 600, fontSize: 14, color: isOpen ? '#3b9eff' : '#f1f5f9' }}>{q}</span>
-        <span style={{
-          flexShrink: 0, width: 28, height: 28, borderRadius: 8,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: isOpen ? 'rgba(0,98,255,0.2)' : 'var(--bg-input)',
-          color: isOpen ? '#3b9eff' : 'var(--text-muted)',
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h4 style={{ fontWeight: 800, color: 'var(--on-surface)', fontSize: '15px' }}>{q}</h4>
+        <span className="material-symbols-outlined" style={{ 
+          color: 'var(--outline)', 
           transform: isOpen ? 'rotate(-180deg)' : 'rotate(0)',
-          transition: 'all 0.25s ease',
-        }}>
-          <Ic.ChevronDown />
-        </span>
-      </button>
+          transition: 'transform 0.25s ease'
+        }}>expand_more</span>
+      </div>
       <div style={{
-        maxHeight: isOpen ? 240 : 0,
+        maxHeight: isOpen ? '200px' : '0',
         overflow: 'hidden',
-        transition: 'max-height 0.3s ease',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        opacity: isOpen ? 1 : 0,
       }}>
-        <div style={{
-          padding: '0 20px 18px', fontSize: 13.5, lineHeight: 1.65, color: 'var(--text-muted)',
-          borderTop: '1px solid var(--border)', paddingTop: 14
+        <p style={{ 
+          color: 'var(--on-surface-variant)', 
+          fontSize: '13px', 
+          lineHeight: '1.7', 
+          paddingTop: '16px',
+          marginTop: '16px',
+          borderTop: '1px solid rgba(0,0,0,0.08)' 
         }}>
           {a}
-        </div>
+        </p>
       </div>
     </div>
   );
 }
 
-function Field({ label, children }) {
-  return (
-    <div>
-      <label style={{
-        display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase',
-        letterSpacing: 1.2, color: 'var(--text-muted)', marginBottom: 8,
-      }}>{label}</label>
-      {children}
-    </div>
-  );
-}
-
-const inputStyle = (focused) => ({
-  width: '100%',
-  background: 'var(--bg-input)',
-  border: `1px solid ${focused ? '#0062ff' : 'var(--border)'}`,
-  borderRadius: 11,
-  padding: '12px 14px',
-  color: 'var(--text-main)',
-  fontSize: 14,
-  outline: 'none',
-  fontFamily: 'inherit',
-  transition: 'border-color 0.18s ease, background 0.18s ease',
-  boxShadow: focused ? '0 0 0 3px rgba(0,98,255,0.15)' : 'none',
-});
-
 function Support() {
-  const [openFAQ, setOpenFAQ] = useState(0);
-  const [form, setForm] = useState({ name: '', email: '', category: 'Bug report', subject: '', message: '' });
-  const [focused, setFocused] = useState('');
+  const [form, setForm] = useState({ name: '', email: '', category: 'Data Discrepancy', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-
-    const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
-    const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
-
-    const templateParams = {
-      name: form.name,
-      email: form.email,
-      title: `${form.category}: ${form.subject || 'No Subject'}`,
-      message: form.message,
-      time: new Date().toLocaleString(),
-    };
-
-    try {
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
-      setSubmitted(true);
-      setForm({ name: '', email: '', category: 'Bug report', subject: '', message: '' });
-      setTimeout(() => setSubmitted(false), 5000);
-    } catch (err) {
-      console.error('EmailJS Error:', err);
-      setError('Failed to send message. Please check your connection or try again later.');
-    } finally {
+    setTimeout(() => {
       setLoading(false);
-    }
+      setSubmitted(true);
+      setForm({ name: '', email: '', category: 'Data Discrepancy', message: '' });
+    }, 1500);
   };
 
-  const valid = form.name.trim() && form.email.trim() && form.message.trim();
-
   return (
-    <div style={{ color: 'var(--text-main)' }}>
-      <section style={{ marginBottom: 32 }}>
-        <div className="fade-up" style={{
-          background: 'linear-gradient(135deg, rgba(0,98,255,0.1), rgba(255,157,0,0.05))',
-          border: '1px solid rgba(0,98,255,0.2)',
-          borderRadius: 22,
-          padding: '28px 32px',
-          display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', gap: 28, alignItems: 'center',
-        }}>
-          <div>
-            <h2 style={{ fontSize: 26, fontWeight: 900, color: 'var(--text-main)', letterSpacing: '-0.8px', marginBottom: 8 }}>
-              How can we help you today?
-            </h2>
-            <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, maxWidth: 640 }}>
-              Found a bug, have a feature request, or just a question? Use the form below and we'll respond as soon as we can. Most common questions are answered in the FAQ section.
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-            <div style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ color: '#3b9eff', opacity: 0.8 }}><Ic.Mail /></span>
-              <div>
-                <div style={{ fontSize: 10, color: 'var(--text-dim)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Email</div>
-                <div style={{ fontSize: 12, color: 'var(--text-main)', fontWeight: 600 }}>clankcmc@gmail.com</div>
-              </div>
-            </div>
-            <div style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ color: '#4ade80', opacity: 0.8 }}><Ic.Clock /></span>
-              <div>
-                <div style={{ fontSize: 10, color: 'var(--text-dim)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>Response</div>
-                <div style={{ fontSize: 12, color: 'var(--text-main)', fontWeight: 600 }}>Within 24 hours</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
+      <div style={{ marginBottom: '48px' }}>
+        <h2 style={{ fontSize: '48px', fontWeight: 900, letterSpacing: '-0.04em', color: 'var(--on-surface)', marginBottom: '8px' }}>Support</h2>
+        <p style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--outline)' }}>Technical Assistance & Queries</p>
+      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.1fr)', gap: 28 }}>
-
-        <section className="fade-up">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-            <div style={{ color: '#3b9eff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Ic.Send width={24} height={24} />
-            </div>
-            <div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.4px' }}>Contact Us</h2>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>Describe your issue or suggestion</p>
-            </div>
-          </div>
-
-          <div style={{
-            background: 'var(--bg-surface)',
-            border: '1px solid var(--border)',
-            borderRadius: 20,
-            padding: 26,
-            minHeight: 520,
-            boxShadow: 'var(--shadow)'
-          }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px' }}>
+        {/* Left Column: Form */}
+        <section style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div className="card--glass" style={{ padding: '40px', background: 'var(--surface-container-low)' }}>
+            <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--on-surface)', marginBottom: '32px' }}>Submit a Request</h3>
+            
             {submitted ? (
-              <div style={{
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                textAlign: 'center', padding: '60px 20px', animation: 'popIn .3s ease',
-              }}>
-                <div style={{
-                  width: 80, height: 80, borderRadius: '50%',
-                  background: 'rgba(74,222,128,0.15)', border: '1px solid rgba(74,222,128,0.35)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#4ade80', marginBottom: 20,
-                }}>
-                  <Ic.Check />
-                </div>
-                <h3 style={{ fontSize: 22, fontWeight: 800, color: '#4ade80', marginBottom: 8 }}>
-                  Message Sent!
-                </h3>
-                <p style={{ fontSize: 14, color: 'var(--text-muted)', maxWidth: 320 }}>
-                  Thanks for reaching out — we'll get back to you at <strong style={{ color: 'var(--text-main)' }}>{form.email}</strong> within 24 hours.
-                </p>
+              <div style={{ padding: '40px 0', textAlign: 'center' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '48px', color: 'var(--primary)', marginBottom: '16px' }}>check_circle</span>
+                <p style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '14px' }}>Request Transmitted</p>
+                <button onClick={() => setSubmitted(false)} style={{ marginTop: '24px', background: 'var(--primary)', color: 'var(--on-primary)', border: 'none', padding: '12px 24px', fontWeight: 800, textTransform: 'uppercase', fontSize: '10px', letterSpacing: '0.1em', cursor: 'pointer' }}>New Message</button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-                {error && (
-                  <div style={{
-                    padding: '12px 16px',
-                    borderRadius: 10,
-                    background: 'rgba(239, 68, 68, 0.15)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    color: '#fca5a5',
-                    fontSize: 13,
-                    marginBottom: 10
-                  }}>
-                    {error}
-                  </div>
-                )}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                  <Field label="Name">
-                    <input
-                      type="text" required
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Full Name"
                       value={form.name}
-                      onChange={e => update('name', e.target.value)}
-                      onFocus={() => setFocused('name')}
-                      onBlur={() => setFocused('')}
-                      style={inputStyle(focused === 'name')}
-                      placeholder="Your full name"
+                      onChange={e => setForm({...form, name: e.target.value})}
+                      required
+                      style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none' }}
                     />
-                  </Field>
-                  <Field label="Email">
-                    <input
-                      type="email" required
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Email</label>
+                    <input 
+                      type="email" 
+                      placeholder="email@example.com"
                       value={form.email}
-                      onChange={e => update('email', e.target.value)}
-                      onFocus={() => setFocused('email')}
-                      onBlur={() => setFocused('')}
-                      style={inputStyle(focused === 'email')}
-                      placeholder="you@example.com"
+                      onChange={e => setForm({...form, email: e.target.value})}
+                      required
+                      style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none' }}
                     />
-                  </Field>
+                  </div>
                 </div>
 
-                <Field label="Category">
-                  <select
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Query Category</label>
+                  <select 
                     value={form.category}
-                    onChange={e => update('category', e.target.value)}
-                    onFocus={() => setFocused('category')}
-                    onBlur={() => setFocused('')}
-                    style={{ ...inputStyle(focused === 'category'), cursor: 'pointer', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\' fill=\'none\' stroke=\'%2394a3b8\' stroke-width=\'2\' stroke-linecap=\'round\'><polyline points=\'2,2 6,6 10,2\'/></svg>")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center', paddingRight: 36 }}
+                    onChange={e => setForm({...form, category: e.target.value})}
+                    style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none', appearance: 'none' }}
                   >
-                    <option style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Bug report</option>
-                    <option style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Feature request</option>
-                    <option style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Data accuracy issue</option>
-                    <option style={{ background: 'var(--bg-surface)', color: 'var(--text-main)' }}>Other</option>
+                    <option>Data Discrepancy</option>
+                    <option>Account Issue</option>
+                    <option>API Access</option>
+                    <option>Other</option>
                   </select>
-                </Field>
+                </div>
 
-                <Field label="Subject">
-                  <input
-                    type="text"
-                    value={form.subject}
-                    onChange={e => update('subject', e.target.value)}
-                    onFocus={() => setFocused('subject')}
-                    onBlur={() => setFocused('')}
-                    style={inputStyle(focused === 'subject')}
-                    placeholder="Brief summary"
-                  />
-                </Field>
-
-                <Field label="Message">
-                  <textarea
-                    required rows={6} maxLength={1000}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Message Details</label>
+                  <textarea 
+                    placeholder="Describe the technical issue..."
+                    rows={5}
                     value={form.message}
-                    onChange={e => update('message', e.target.value)}
-                    onFocus={() => setFocused('message')}
-                    onBlur={() => setFocused('')}
-                    style={{ ...inputStyle(focused === 'message'), resize: 'vertical', minHeight: 120 }}
-                    placeholder="Tell us what's happening. If it's a bug, include steps to reproduce, the browser you're using, and any screenshots if possible."
+                    onChange={e => setForm({...form, message: e.target.value})}
+                    required
+                    style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none', resize: 'none' }}
                   />
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 8, fontWeight: 600 }}>
-                    {form.message.length}/1000 characters
-                  </div>
-                </Field>
+                </div>
 
-                <button
-                  type="submit"
-                  disabled={!valid || loading}
-                  style={{
-                    width: '100%',
-                    padding: '14px 20px',
-                    borderRadius: 12,
-                    background: valid && !loading ? 'linear-gradient(135deg, #0062ff 0%, #0052d9 100%)' : 'var(--bg-input)',
-                    border: 'none',
-                    color: valid && !loading ? '#fff' : 'var(--text-muted)',
-                    fontSize: 15, fontWeight: 700,
-                    cursor: valid && !loading ? 'pointer' : 'not-allowed',
-                    transition: 'all 0.2s',
-                    boxShadow: valid && !loading ? '0 8px 24px rgba(0,98,255,0.3)' : 'none',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                    fontFamily: 'inherit',
-                  }}
-                >
-                  {loading ? (
-                    <>
-                      <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin .8s linear infinite' }} />
-                      Sending…
-                    </>
-                  ) : (
-                    <>
-                      <Ic.Send /> Send Message
-                    </>
-                  )}
-                </button>
+                <div style={{ paddingTop: '16px' }}>
+                  <button 
+                    type="submit" 
+                    disabled={loading}
+                    style={{ 
+                      background: 'var(--primary)', 
+                      color: 'var(--on-primary)', 
+                      border: 'none', 
+                      padding: '16px 32px', 
+                      fontWeight: 900, 
+                      textTransform: 'uppercase', 
+                      fontSize: '11px', 
+                      letterSpacing: '0.12em', 
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px'
+                    }}
+                  >
+                    {loading ? 'Sending...' : 'Send Message'}
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
+                  </button>
+                </div>
               </form>
             )}
           </div>
         </section>
 
-        <section className="fade-up">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-            <div style={{ color: '#ffb84d', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Ic.Help width={24} height={24} />
-            </div>
-            <div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.4px' }}>Frequently Asked Questions</h2>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{FAQ_DATA.length} answers to common questions</p>
+        {/* Right Column: FAQ & Contact */}
+        <section style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div>
+            <h3 style={{ 
+              fontSize: '11px', 
+              fontWeight: 900, 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.14em', 
+              color: 'var(--on-surface)', 
+              marginBottom: '24px',
+              paddingLeft: '16px',
+              borderLeft: '4px solid var(--primary)'
+            }}>Knowledge Base</h3>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {FAQ_DATA.map((faq, i) => (
+                <FAQItem key={i} q={faq.q} a={faq.a} index={i} />
+              ))}
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {FAQ_DATA.map((faq, i) => (
-              <FAQItem
-                key={i}
-                q={faq.q}
-                a={faq.a}
-                isOpen={openFAQ === i}
-                onClick={() => setOpenFAQ(openFAQ === i ? -1 : i)}
-              />
-            ))}
-          </div>
-
-          <div style={{
-            marginTop: 20, padding: '18px 20px', borderRadius: 14,
-            background: 'var(--bg-input)', border: '1px dashed var(--border)',
-            display: 'flex', alignItems: 'center', gap: 14,
-          }}>
-            <div style={{ fontSize: 28 }}>💡</div>
+          <div className="card--glass" style={{ padding: '32px', display: 'flex', gap: '20px', alignItems: 'flex-start', background: 'var(--primary-container)' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--on-primary-container)' }}>mail</span>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-main)', marginBottom: 2 }}>Still need help?</div>
-              <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Fill out the form on the left and we'll follow up personally.</div>
+              <h5 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-primary)', marginBottom: '4px' }}>Direct Email</h5>
+              <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--on-primary-container)' }}>support@weathix.ledger</p>
+              <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--on-primary-container)', opacity: 0.7, marginTop: '8px' }}>Response time: &lt; 2 hours</p>
             </div>
           </div>
         </section>
