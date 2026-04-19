@@ -2,8 +2,6 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 function About() {
-  const { darkMode } = useTheme();
-
   return (
     <div className="fade-up" style={{ maxWidth: '900px', margin: '0 auto', width: '100%' }}>
       <header style={{ marginBottom: '48px' }}>

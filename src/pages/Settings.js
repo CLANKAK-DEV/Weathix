@@ -39,15 +39,13 @@ function Settings({ setView }) {
               </div>
               <div style={{ display: 'flex', background: 'var(--surface-container-highest)', padding: '4px' }}>
                 <button 
-                  onClick={() => !darkMode && null} 
-                  disabled={!darkMode}
+                  onClick={darkMode ? toggleTheme : undefined}
                   style={{ 
                     padding: '8px 16px', 
                     background: !darkMode ? 'var(--primary)' : 'transparent', 
                     color: !darkMode ? 'var(--on-primary)' : 'var(--on-surface-variant)',
                     border: 'none', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' 
                   }}
-                  onClick={darkMode ? toggleTheme : undefined}
                 >Light</button>
                 <button 
                   onClick={darkMode ? undefined : toggleTheme}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Ic } from '../utils/icons';
 import { useTheme } from '../contexts/ThemeContext';
 
 function Privacy({ setView }) {

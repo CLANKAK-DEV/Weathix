@@ -36,16 +36,16 @@ function MapControls({ onZoomIn, onZoomOut, onLocate, setMapLayer, mapLayer, set
     <>
       <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 1000, display: 'flex', flexDirection: 'column', gap: 6 }}>
         {MAP_LAYERS.map(l => (
-          <button 
-            key={l.id} 
-            onClick={() => setMapLayer(l.id)} 
-            style={{ 
-              background: mapLayer === l.id ? l.color : 'rgba(15, 23, 42, 0.9)', 
+          <button
+            key={l.id}
+            onClick={() => setMapLayer(l.id)}
+            style={{
+              background: mapLayer === l.id ? l.color : 'rgba(15, 23, 42, 0.9)',
               border: `1px solid ${mapLayer === l.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.05)'}`,
-              color: '#fff', 
-              padding: '10px 16px', borderRadius: 12, 
-              fontSize: 13, fontWeight: 700, 
-              cursor: 'pointer', backdropFilter: 'blur(16px)', 
+              color: '#fff',
+              padding: '10px 16px', borderRadius: 12,
+              fontSize: 13, fontWeight: 700,
+              cursor: 'pointer', backdropFilter: 'blur(16px)',
               minWidth: 120, textAlign: 'left',
               display: 'flex', alignItems: 'center', gap: 12,
               transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -95,63 +95,55 @@ function MapControls({ onZoomIn, onZoomOut, onLocate, setMapLayer, mapLayer, set
 }
 
 
-function MapControlWrapper({ setMapLayer, mapLayer, setMapFull, mapFull, onLocate }) {
-  const map = useMap();
-  
-  const handleZoomIn = () => map.zoomIn();
-  const handleZoomOut = () => map.zoomOut();
-  
-  return <MapControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onLocate={onLocate} setMapLayer={setMapLayer} mapLayer={mapLayer} setMapFull={setMapFull} mapFull={mapFull} />;
-}
 
 
 const Ic = {
   Dashboard: (props) => <IconWrapper src="/icons/dashboard.png" alt="Dashboard" {...props} />,
-  Map:       (props) => <IconWrapper src="/icons/map_line.png" alt="Map" size={18} {...props} />,
-  Pin:       (props) => <IconWrapper src="/icons/pin_line.png" alt="Saved" size={18} {...props} />,
-  Calendar:  (props) => <IconWrapper src="/icons/calendar_line.png" alt="Calendar" size={18} {...props} />,
-  Settings:  (props) => <IconWrapper src="/icons/settings_line.png" alt="Settings" size={18} {...props} />,
-  Help:      (props) => <IconWrapper src="/icons/question_line.png" alt="FAQ" size={18} {...props} />,
-  Bell:      (props) => <IconWrapper src="/icons/bell_line.png" alt="Alerts" size={18} {...props} />,
-  Search:    (props) => <IconWrapper src="/icons/search_line.png" alt="Search" size={16} {...props} />,
-  Locate:    (props) => <IconWrapper src="/icons/locate_line.png" alt="Locate" size={18} {...props} />,
-  Expand:    (props) => <IconWrapper src="/icons/expand_line.png" alt="Expand" size={18} {...props} />,
-  Collapse:  (props) => <IconWrapper src="/icons/expand_line.png" alt="Collapse" size={18} style={{ transform: 'rotate(180deg)' }} {...props} />,
-  Wind:      (props) => <IconWrapper src="/icons/wind.png" alt="Wind" size={22} {...props} />,
-  Eye:       (props) => <IconWrapper src="/icons/visibility.png" alt="Visibility" size={22} {...props} />,
-  Drop:      (props) => <IconWrapper src="/icons/humidity.png" alt="Humidity" size={22} {...props} />,
-  Gauge:     (props) => <IconWrapper src="/icons/uv.png" alt="UV Index" size={22} {...props} />,
-  Thermo:    () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>,
-  Pressure:  (props) => <IconWrapper src="/icons/pressure.png" alt="Pressure" size={22} {...props} />,
-  Plus:      () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  Minus:     () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-  Rain:      (props) => <IconWrapper src="/icons/precipitation.png" alt="Precipitation" size={22} {...props} />,
-  Sunrise:   (props) => <IconWrapper src="/icons/daylight.png" alt="Sunrise" size={22} {...props} />,
-  Sunset:    (props) => <IconWrapper src="/icons/daylight.png" alt="Sunset" size={22} style={{ transform: 'scaleX(-1)' }} {...props} />,
-  Cloud:     (props) => <IconWrapper src="/icons/clouds.png" alt="Clouds" size={22} {...props} />,
-  Snow:      (props) => <IconWrapper src="/icons/snow.png" alt="Snow" size={22} {...props} />,
-  MapRain:   (props) => <IconWrapper src="/icons/map_rain.png" alt="Rain" size={18} {...props} />,
-  ChevronLeft:  () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6"/></svg>,
-  ChevronRight: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6"/></svg>,
-  Filter:    () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
-  Trash:     () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>,
-  Clock:     (props) => <IconWrapper src="/icons/clock.png" alt="Time" size={18} {...props} />,
+  Map: (props) => <IconWrapper src="/icons/map_line.png" alt="Map" size={18} {...props} />,
+  Pin: (props) => <IconWrapper src="/icons/pin_line.png" alt="Saved" size={18} {...props} />,
+  Calendar: (props) => <IconWrapper src="/icons/calendar_line.png" alt="Calendar" size={18} {...props} />,
+  Settings: (props) => <IconWrapper src="/icons/settings_line.png" alt="Settings" size={18} {...props} />,
+  Help: (props) => <IconWrapper src="/icons/question_line.png" alt="FAQ" size={18} {...props} />,
+  Bell: (props) => <IconWrapper src="/icons/bell_line.png" alt="Alerts" size={18} {...props} />,
+  Search: (props) => <IconWrapper src="/icons/search_line.png" alt="Search" size={16} {...props} />,
+  Locate: (props) => <IconWrapper src="/icons/locate_line.png" alt="Locate" size={18} {...props} />,
+  Expand: (props) => <IconWrapper src="/icons/expand_line.png" alt="Expand" size={18} {...props} />,
+  Collapse: (props) => <IconWrapper src="/icons/expand_line.png" alt="Collapse" size={18} style={{ transform: 'rotate(180deg)' }} {...props} />,
+  Wind: (props) => <IconWrapper src="/icons/wind.png" alt="Wind" size={22} {...props} />,
+  Eye: (props) => <IconWrapper src="/icons/visibility.png" alt="Visibility" size={22} {...props} />,
+  Drop: (props) => <IconWrapper src="/icons/humidity.png" alt="Humidity" size={22} {...props} />,
+  Gauge: (props) => <IconWrapper src="/icons/uv.png" alt="UV Index" size={22} {...props} />,
+  Thermo: () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" /></svg>,
+  Pressure: (props) => <IconWrapper src="/icons/pressure.png" alt="Pressure" size={22} {...props} />,
+  Plus: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>,
+  Minus: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>,
+  Rain: (props) => <IconWrapper src="/icons/precipitation.png" alt="Precipitation" size={22} {...props} />,
+  Sunrise: (props) => <IconWrapper src="/icons/daylight.png" alt="Sunrise" size={22} {...props} />,
+  Sunset: (props) => <IconWrapper src="/icons/daylight.png" alt="Sunset" size={22} style={{ transform: 'scaleX(-1)' }} {...props} />,
+  Cloud: (props) => <IconWrapper src="/icons/clouds.png" alt="Clouds" size={22} {...props} />,
+  Snow: (props) => <IconWrapper src="/icons/snow.png" alt="Snow" size={22} {...props} />,
+  MapRain: (props) => <IconWrapper src="/icons/map_rain.png" alt="Rain" size={18} {...props} />,
+  ChevronLeft: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="15 18 9 12 15 6" /></svg>,
+  ChevronRight: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="9 18 15 12 9 6" /></svg>,
+  Filter: () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" /></svg>,
+  Trash: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /></svg>,
+  Clock: (props) => <IconWrapper src="/icons/clock.png" alt="Time" size={18} {...props} />,
 };
 
 function IconWrapper({ src, alt, size, style = {}, ...props }) {
   const { darkMode } = useTheme();
   return (
-    <img 
-      src={src} 
-      alt={alt} 
-      style={{ 
-        width: props.width || size || 20, 
-        height: props.height || size || 20, 
-        objectFit: 'contain', 
-        filter: darkMode ? 'grayscale(1) invert(1) brightness(1.6) contrast(1.2)' : 'none', 
-        ...style 
-      }} 
-      {...props} 
+    <img
+      src={src}
+      alt={alt}
+      style={{
+        width: props.width || size || 20,
+        height: props.height || size || 20,
+        objectFit: 'contain',
+        filter: darkMode ? 'grayscale(1) invert(1) brightness(1.6) contrast(1.2)' : 'none',
+        ...style
+      }}
+      {...props}
     />
   );
 }
@@ -163,11 +155,11 @@ function IconWrapper({ src, alt, size, style = {}, ...props }) {
 
 
 const MAP_LAYERS = [
-  { id: 'precipitation_new', label: 'Rain',   color: '#1b3022', icon: <Ic.Rain width={20} height={20} /> },
-  { id: 'temp_new',          label: 'Temp',   color: '#45645e', icon: <Ic.Thermo /> },
-  { id: 'wind_new',          label: 'Wind',   color: '#10b981', icon: <Ic.Wind width={20} height={20} /> },
-  { id: 'clouds_new',        label: 'Clouds', color: '#94a3b8', icon: <Ic.Cloud width={20} height={20} /> },
-  { id: 'pressure_new',      label: 'Pressure', color: '#a855f7', icon: <Ic.Pressure width={20} height={20} /> },
+  { id: 'precipitation_new', label: 'Rain', color: '#1b3022', icon: <Ic.Rain width={20} height={20} /> },
+  { id: 'temp_new', label: 'Temp', color: '#45645e', icon: <Ic.Thermo /> },
+  { id: 'wind_new', label: 'Wind', color: '#10b981', icon: <Ic.Wind width={20} height={20} /> },
+  { id: 'clouds_new', label: 'Clouds', color: '#94a3b8', icon: <Ic.Cloud width={20} height={20} /> },
+  { id: 'pressure_new', label: 'Pressure', color: '#a855f7', icon: <Ic.Pressure width={20} height={20} /> },
 ];
 
 const RANDOM_LOCATIONS = [
@@ -180,53 +172,15 @@ const RANDOM_LOCATIONS = [
 ];
 
 
-function getBg(group, isNight) {
-  const g = (group || '').toLowerCase();
-  
-  if (isNight) {
-    if (g === 'clear')   return 'linear-gradient(165deg, #0a0c0b 0%, #111412 100%)'; // Deep Obsidian
-    if (g === 'clouds')  return 'linear-gradient(165deg, #0f1211 0%, #1a201d 100%)'; // Muted Forest Dark
-    if (g === 'rain' || g === 'drizzle' || g === 'showers') return 'linear-gradient(165deg, #0a0e0c 0%, #1b2621 100%)'; // Rainy Night
-    if (g === 'thunder') return 'linear-gradient(165deg, #0c0a12 0%, #1a1526 100%)'; // Stormy Dark
-    if (g === 'snow')    return 'linear-gradient(165deg, #0e1211 0%, #202b26 100%)'; // Icy Dark
-    return 'linear-gradient(165deg, #0a0c0b 0%, #141a17 100%)';
-  } else {
-    if (g === 'clear')   return 'linear-gradient(145deg, #1b3022 0%, #2dd4bf 45%, #fde047 100%)'; // Golden Hour / Clear
-    if (g === 'clouds')  return 'linear-gradient(145deg, #64748b 0%, #94a3b8 45%, #cbd5e1 100%)'; // Cloudy Day
-    if (g === 'rain' || g === 'drizzle' || g === 'showers') return 'linear-gradient(145deg, #061b0e 0%, #1b3022 45%, #84a59d 100%)'; // Rainy Day
-    if (g === 'thunder') return 'linear-gradient(145deg, #4c1d95 0%, #7c3aed 45%, #a855f7 100%)'; // Stormy Day
-    if (g === 'snow')    return 'linear-gradient(145deg, #94a3b8 0%, #cbd5e1 45%, #f1f5f9 100%)'; // Snowy Day
-    return 'linear-gradient(145deg, #061b0e 0%, #84a59d 45%, #93c5fd 100%)';
-  }
-}
 
 
-function PatternOverlay({ group }) {
-  const g = (group || '').toLowerCase();
-  if (g === 'clear') return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 0.15, pointerEvents: 'none' }}>
-      <svg width="100%" height="100%"><defs><pattern id="pClear" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#fff"/></pattern></defs><rect width="100%" height="100%" fill="url(#pClear)"/></svg>
-    </div>
-  );
-  if (g === 'rain' || g === 'drizzle' || g === 'showers') return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none' }}>
-      <svg width="100%" height="100%"><defs><pattern id="pRain" x="0" y="0" width="20" height="40" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="10" y2="40" stroke="#fff" strokeWidth="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#pRain)"/></svg>
-    </div>
-  );
-  if (g === 'clouds') return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 0.1, pointerEvents: 'none' }}>
-      <svg width="100%" height="100%"><defs><pattern id="pClouds" x="0" y="0" width="100" height="60" patternUnits="userSpaceOnUse"><circle cx="50" cy="30" r="20" fill="#fff" opacity="0.3"/><circle cx="30" cy="30" r="15" fill="#fff" opacity="0.3"/><circle cx="70" cy="30" r="15" fill="#fff" opacity="0.3"/></pattern></defs><rect width="100%" height="100%" fill="url(#pClouds)"/></svg>
-    </div>
-  );
-  return null;
-}
 
 
 function getNow() {
   const d = new Date();
   return {
     date: d.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }),
-    day:  d.toLocaleDateString('en-US', { weekday: 'long' }),
+    day: d.toLocaleDateString('en-US', { weekday: 'long' }),
     time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
   };
 }
@@ -240,71 +194,12 @@ function fmtDate(dt) {
   return new Date(dt * 1000).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
 }
 
-function getWeatherAccent(group) {
-  if (group === 'clear') return { bg: 'rgba(69,100,94,0.13)', border: 'rgba(69,100,94,0.35)', color: '#45645e', glow: 'rgba(69,100,94,0.22)', label: 'Clear / Sunny' };
-  if (group === 'rain' || group === 'drizzle' || group === 'showers') return { bg: 'rgba(27,48,34,0.13)', border: 'rgba(27,48,34,0.35)', color: '#1b3022', glow: 'rgba(27,48,34,0.22)', label: 'Rain / Drizzle' };
-  if (group === 'thunder') return { bg: 'rgba(168,85,247,0.13)', border: 'rgba(69,100,94,0.35)', color: '#a855f7', glow: 'rgba(168,85,247,0.22)', label: 'Thunderstorm' };
-  if (group === 'snow') return { bg: 'rgba(186,230,253,0.13)', border: 'rgba(186,230,253,0.35)', color: '#bae6fd', glow: 'rgba(186,230,253,0.22)', label: 'Snow' };
-  if (group === 'fog' || group === 'clouds') return { bg: 'rgba(148,163,184,0.13)', border: 'rgba(148,163,184,0.35)', color: '#94a3b8', glow: 'rgba(148,163,184,0.22)', label: 'Cloudy / Fog' };
-  return { bg: 'rgba(255,255,255,0.03)', border: 'rgba(255,255,255,0.07)', color: '#94a3b8', glow: 'transparent', label: 'No forecast' };
-}
-
-function getDateKey(date) {
-  const d = date instanceof Date ? date : new Date(date);
-  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-}
 
 
 
 
-function Btn({ onClick, title, children, style = {} }) {
-  const [hov, setHov] = useState(false);
-  const { darkMode } = useTheme();
-  return (
-    <button onClick={onClick} title={title} style={{
-      background: hov ? 'var(--border)' : 'var(--bg-input)',
-      border: '1px solid var(--border)',
-      borderRadius: 8, cursor: 'pointer', color: 'var(--text-muted)',
-      width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
-      transition: 'all 0.18s', flexShrink: 0, ...style,
-    }} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
-      {children}
-    </button>
-  );
-}
 
 
-function NavItem({ icon, label, active, onClick }) {
-  const [hov, setHov] = useState(false);
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 14,
-        padding: '12px 16px',
-        border: 'none',
-        cursor: 'pointer',
-        width: '100%',
-        textAlign: 'left',
-        background: active ? 'var(--primary-container)' : hov ? 'var(--secondary-container)' : 'transparent',
-        color: active ? 'var(--on-primary)' : hov ? 'var(--primary-container)' : 'var(--secondary)',
-        fontFamily: 'inherit',
-        fontSize: 11,
-        fontWeight: active ? 700 : 600,
-        textTransform: 'uppercase',
-        letterSpacing: '0.06em',
-        transition: 'background 0.15s ease, color 0.15s ease',
-      }}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
-  );
-}
 
 
 function SearchBar({ onSelect }) {
@@ -321,7 +216,7 @@ function SearchBar({ onSelect }) {
     t.current = setTimeout(async () => {
       setBusy(true);
       try { const d = await searchCities(v); setRes(d); setOpen(true); }
-      catch (_) {} finally { setBusy(false); }
+      catch (_) { } finally { setBusy(false); }
     }, 380);
   };
 
@@ -355,7 +250,7 @@ function SearchBar({ onSelect }) {
               color: 'var(--on-surface-variant)', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
               borderBottom: i < res.length - 1 ? '1px solid var(--outline-variant)' : 'none',
             }} onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-container-low)'}
-               onMouseLeave={e => e.currentTarget.style.background = 'none'}>
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}>
               <span className="material-symbols-outlined" style={{ fontSize: 14, color: 'var(--outline)' }}>location_on</span>
               <span style={{ fontWeight: 800, color: 'var(--on-surface)', textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 11 }}>{c.name}</span>
               {c.state && <span style={{ color: 'var(--outline)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{c.state}</span>}
@@ -428,9 +323,9 @@ function PermissionModal({ onClose }) {
               <li>Refresh the page to sync your position</li>
             </ol>
           </div>
-          <button onClick={onClose} style={{ 
-            marginTop: 8, padding: '14px', background: 'var(--primary)', color: 'var(--on-primary)', 
-            border: 'none', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' 
+          <button onClick={onClose} style={{
+            marginTop: 8, padding: '14px', background: 'var(--primary)', color: 'var(--on-primary)',
+            border: 'none', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
           }}>I Understand</button>
         </div>
       </div>
@@ -450,7 +345,7 @@ function CitySearchModal({ onClose, onSelect }) {
     t.current = setTimeout(async () => {
       setBusy(true);
       try { const d = await searchCities(v); setRes(d); }
-      catch (_) {} finally { setBusy(false); }
+      catch (_) { } finally { setBusy(false); }
     }, 380);
   };
 
@@ -492,15 +387,15 @@ function CitySearchModal({ onClose, onSelect }) {
           padding: '16px 20px', marginBottom: 24,
         }}>
           <span className="material-symbols-outlined" style={{ fontSize: 24, color: 'var(--outline)' }}>search</span>
-          <input 
-            autoFocus 
-            value={q} 
-            onChange={change} 
-            placeholder="Type city name..." 
+          <input
+            autoFocus
+            value={q}
+            onChange={change}
+            placeholder="Type city name..."
             style={{
               background: 'none', border: 'none', outline: 'none', color: 'var(--on-surface)',
               fontSize: 16, width: '100%', fontFamily: 'inherit', fontWeight: 600
-            }} 
+            }}
           />
           {busy && <div style={{ width: 20, height: 20, border: '2px solid var(--outline-variant)', borderTopColor: 'var(--primary)', animation: 'spin .7s linear infinite' }} />}
         </div>
@@ -512,7 +407,7 @@ function CitySearchModal({ onClose, onSelect }) {
               padding: '16px 20px', background: 'var(--surface-container-low)', border: 'none',
               color: 'var(--on-surface)', cursor: 'pointer', transition: 'all 0.2s ease',
             }} onMouseEnter={e => e.currentTarget.style.background = 'var(--primary-container)'}
-               onMouseLeave={e => e.currentTarget.style.background = 'var(--surface-container-low)'}>
+              onMouseLeave={e => e.currentTarget.style.background = 'var(--surface-container-low)'}>
               <span className="material-symbols-outlined" style={{ fontSize: 20, color: 'var(--outline)' }}>location_on</span>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em', fontSize: 13 }}>{c.name}</div>
@@ -807,7 +702,7 @@ function SidebarSavedItem({ city, onSelect, active }) {
 function SavedLocationCard({ city, onSelect, onRemove }) {
   const { unit } = useTheme();
   const [data, setData] = useState(null);
-  
+
   const formatTemp = (celsius) => {
     if (unit === 'F') return Math.round((celsius * 9) / 5 + 32);
     return Math.round(celsius);
@@ -821,11 +716,11 @@ function SavedLocationCard({ city, onSelect, onRemove }) {
   if (!data) return <div style={{ minHeight: '240px', background: 'var(--surface-container-low)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Loading...</div>;
 
   return (
-    <div 
+    <div
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
-      style={{ 
-        background: 'var(--surface-container-low)', 
+      style={{
+        background: 'var(--surface-container-low)',
         color: 'var(--on-surface)',
         padding: '24px', minHeight: '240px',
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -837,7 +732,7 @@ function SavedLocationCard({ city, onSelect, onRemove }) {
           <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>delete</span>
         </button>
       </div>
-      
+
       <div onClick={onSelect} style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <h3 style={{ fontSize: '24px', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: '4px' }}>{city.name}</h3>
@@ -880,8 +775,8 @@ function SavedLocationRow({ city, onRemove }) {
   }, [city.lat, city.lon]);
 
   return (
-    <div style={{ 
-      display: 'grid', gridTemplateColumns: '3fr 2fr 2fr 2fr 2fr 1fr', gap: '16px', 
+    <div style={{
+      display: 'grid', gridTemplateColumns: '3fr 2fr 2fr 2fr 2fr 1fr', gap: '16px',
       padding: '20px 24px', background: 'var(--surface)', alignItems: 'center',
       borderBottom: '1px solid var(--surface-container-highest)'
     }}>
@@ -906,8 +801,8 @@ function SavedLocationRow({ city, onRemove }) {
 }
 
 const FC_FILTERS = [
-  { id: 'next7',    label: 'Next 7 days' },
-  { id: '14days',   label: '14 Days' },
+  { id: 'next7', label: 'Next 7 days' },
+  { id: '14days', label: '14 Days' },
 ];
 
 const HR_FILTERS = [
@@ -928,13 +823,12 @@ export default function Dashboard() {
   const [hrFilter, setHrFilter] = useState('24h');
   const [selectedDay, setSelectedDay] = useState(null);
   const [calendarDate, setCalendarDate] = useState(new Date());
-  const [selectedCalendarDate, setSelectedCalendarDate] = useState(null);
   const [savedFilter, setSavedFilter] = useState('');
   const [savedSort, setSavedSort] = useState('name');
   const [searchOpen, setSearchOpen] = useState(false);
   const [permissionOpen, setPermissionOpen] = useState(false);
   const hourlyRef = useRef(null);
-  
+
   const { saved, toggleSave } = useSavedCitiesViewModel();
   const { darkMode, unit } = useTheme();
 
@@ -984,21 +878,21 @@ export default function Dashboard() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => load(coords.latitude, coords.longitude),
-        async (err) => { 
+        async (err) => {
           if (err.code === 1) {
             setPermissionOpen(true);
             setLoading(false);
           } else {
-            const ip = await getIpLocation(); 
-            if (ip) load(ip.lat, ip.lon, ip.city); 
+            const ip = await getIpLocation();
+            if (ip) load(ip.lat, ip.lon, ip.city);
             else fallback();
           }
         },
         { timeout: 8000 }
       );
     } else {
-      const ip = await getIpLocation(); 
-      if (ip) load(ip.lat, ip.lon, ip.city); 
+      const ip = await getIpLocation();
+      if (ip) load(ip.lat, ip.lon, ip.city);
       else fallback();
     }
   }, [load]);
@@ -1007,8 +901,8 @@ export default function Dashboard() {
 
   const weather = data?.current;
 
-  const hourly  = (data?.hourly || []).slice(0, hrFilter === '24h' ? 24 : 48);
-  const daily   = (data?.daily || []).slice(0, fcFilter === 'next7' ? 7 : 14);
+  const hourly = (data?.hourly || []).slice(0, hrFilter === '24h' ? 24 : 48);
+  const daily = (data?.daily || []).slice(0, fcFilter === 'next7' ? 7 : 14);
 
   const filteredSaved = saved
     .filter(c => c.name.toLowerCase().includes(savedFilter.toLowerCase()) || c.country.toLowerCase().includes(savedFilter.toLowerCase()))
@@ -1095,12 +989,12 @@ export default function Dashboard() {
         </div>
 
         <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '0 16px', marginBottom: 24 }}>
-          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>dashboard</span>} label="Dashboard" active={view==='dashboard'} onClick={() => setView('dashboard')} />
-          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>map</span>} label="Maps" active={view==='map'} onClick={() => setView('map')} />
-          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>bookmark</span>} label="Saved Locations" active={view==='saved'} onClick={() => setView('saved')} />
-          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>calendar_today</span>} label="Calendar" active={view==='calendar'} onClick={() => setView('calendar')} />
-          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>help</span>} label="Support" active={view==='support'} onClick={() => setView('support')} />
-          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>} label="Settings" active={view==='settings'} onClick={() => setView('settings')} />
+          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>dashboard</span>} label="Dashboard" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
+          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>map</span>} label="Maps" active={view === 'map'} onClick={() => setView('map')} />
+          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>bookmark</span>} label="Saved Locations" active={view === 'saved'} onClick={() => setView('saved')} />
+          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>calendar_today</span>} label="Calendar" active={view === 'calendar'} onClick={() => setView('calendar')} />
+          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>help</span>} label="Support" active={view === 'support'} onClick={() => setView('support')} />
+          <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>} label="Settings" active={view === 'settings'} onClick={() => setView('settings')} />
         </nav>
 
         {saved.length > 0 && (
@@ -1125,16 +1019,16 @@ export default function Dashboard() {
         <div style={{ marginTop: 'auto', padding: '0 16px' }}>
           <button
             onClick={locateMe}
-            style={{ 
-              width: '100%', 
-              background: 'var(--primary)', 
-              color: 'var(--on-primary)', 
-              border: 'none', 
-              padding: '14px', 
-              fontSize: '11px', 
-              fontWeight: 900, 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.12em', 
+            style={{
+              width: '100%',
+              background: 'var(--primary)',
+              color: 'var(--on-primary)',
+              border: 'none',
+              padding: '14px',
+              fontSize: '11px',
+              fontWeight: 900,
+              textTransform: 'uppercase',
+              letterSpacing: '0.12em',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -1149,10 +1043,10 @@ export default function Dashboard() {
 
         <div style={{ marginTop: 'auto', padding: '24px 20px 0 20px', borderTop: '1px solid var(--outline-variant)' }}>
           <p style={{ fontSize: '9px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--outline)', marginBottom: '8px' }}>Developer</p>
-          <a 
-            href="https://www.lahoucinechouker.online/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href="https://www.lahoucinechouker.online/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{ fontSize: '11px', fontWeight: 900, color: 'var(--primary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}
           >
             Lahoucine Chouker
@@ -1170,7 +1064,7 @@ export default function Dashboard() {
             <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--outline)', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               {view === 'support' ? 'Technical Assistance & Queries'
                 : view === 'settings' ? 'System Configuration'
-                : `${now.day} • ${now.date} • ${now.time}`}
+                  : `${now.day} • ${now.date} • ${now.time}`}
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -1397,9 +1291,8 @@ export default function Dashboard() {
             const month = calendarDate.getMonth();
             const startOfMonth = new Date(year, month, 1);
             const endOfMonth = new Date(year, month + 1, 0);
-            const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
             const monthName = calendarDate.toLocaleDateString('en-US', { month: 'long' });
-            
+
             const days = [];
             // Padding for previous month
             for (let i = 0; i < startOfMonth.getDay(); i++) {
@@ -1451,11 +1344,11 @@ export default function Dashboard() {
                         }
                         const { d, isToday, forecast } = item;
                         return (
-                          <div 
-                            key={item.key} 
+                          <div
+                            key={item.key}
                             onClick={() => forecast && setSelectedDay(forecast)}
-                            style={{ 
-                              background: isToday ? 'var(--primary-container)' : 'var(--surface)', 
+                            style={{
+                              background: isToday ? 'var(--primary-container)' : 'var(--surface)',
                               color: isToday ? 'var(--on-primary)' : 'var(--on-surface)',
                               minHeight: '120px', padding: '12px',
                               display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
@@ -1517,16 +1410,16 @@ export default function Dashboard() {
                   <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                     <div style={{ position: 'relative', display: 'flex', alignItems: 'center', background: 'var(--surface-container-low)', border: '1px solid var(--outline-variant)', padding: '0 12px' }}>
                       <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--outline)' }}>search</span>
-                      <input 
+                      <input
                         value={savedFilter}
                         onChange={(e) => setSavedFilter(e.target.value)}
-                        placeholder="Filter list..." 
-                        style={{ background: 'transparent', border: 'none', padding: '10px 8px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--on-surface)', outline: 'none', width: '160px' }} 
+                        placeholder="Filter list..."
+                        style={{ background: 'transparent', border: 'none', padding: '10px 8px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--on-surface)', outline: 'none', width: '160px' }}
                       />
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', background: 'var(--surface-container-low)', border: '1px solid var(--outline-variant)', padding: '0 12px', gap: '8px' }}>
                       <span className="material-symbols-outlined" style={{ fontSize: '18px', color: 'var(--outline)' }}>sort_by_alpha</span>
-                      <select 
+                      <select
                         value={savedSort}
                         onChange={(e) => setSavedSort(e.target.value)}
                         style={{ background: 'transparent', border: 'none', padding: '10px 0', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--on-surface)', outline: 'none', cursor: 'pointer' }}
@@ -1540,7 +1433,7 @@ export default function Dashboard() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
                   {/* Add City Card */}
-                  <button 
+                  <button
                     onClick={() => setSearchOpen(true)}
                     style={{ background: 'var(--surface-container-low)', border: '1px dashed var(--outline-variant)', minHeight: '240px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', gap: '16px' }}
                   >
