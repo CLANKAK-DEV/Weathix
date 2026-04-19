@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const FAQ_DATA = [
   {
@@ -71,11 +72,29 @@ function Support() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        {
+          name: form.name,
+          email: form.email,
+          title: form.category,
+          message: form.message,
+          time: new Date().toLocaleString(),
+          to_email: 'choukerlahoucine@gmail.com'
+        },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
       setSubmitted(true);
       setForm({ name: '', email: '', category: 'Data Discrepancy', message: '' });
-    }, 1500);
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      alert('Failed to send message. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -203,7 +222,7 @@ function Support() {
             <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--on-primary-container)' }}>mail</span>
             <div>
               <h5 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-primary)', marginBottom: '4px' }}>Direct Email</h5>
-              <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--on-primary-container)' }}>support@weathix.ledger</p>
+              <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--on-primary-container)' }}>choukerlahoucine@gmail.com</p>
               <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--on-primary-container)', opacity: 0.7, marginTop: '8px' }}>Response time: &lt; 2 hours</p>
             </div>
           </div>
