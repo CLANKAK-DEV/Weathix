@@ -73,7 +73,7 @@ The app will be available at `http://localhost:3000`.
 ---
 
 ## 👨‍💻 Author
-Designed and Developed by **[Lahoucine Chouker](https://www.lahoucinechouker.online/)**
+Designed and Developed by **clankak]([https://www.lahoucinechouker.online](https://www.clankak.online/)/)**
 
 ---
 *Precision Engineered for the Modern Web.*
