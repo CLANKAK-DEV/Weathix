@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Dashboard from './pages/Dashboard';
 import Support from './pages/Support';
@@ -7,11 +7,23 @@ import Settings from './pages/Settings';
 import Privacy from './pages/Privacy';
 import Security from './pages/Security';
 import About from './pages/About';
+import { applyRouteSeo } from './utils/seo';
+
+function SeoUpdater() {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    applyRouteSeo(location.pathname);
+  }, [location.pathname]);
+
+  return null;
+}
 
 function App() {
   return (
     <ThemeProvider>
       <Router>
+        <SeoUpdater />
         <Routes>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />

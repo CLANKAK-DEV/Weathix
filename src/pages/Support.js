@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
 
 const FAQ_DATA = [
@@ -68,46 +68,91 @@ function Support() {
   const [form, setForm] = useState({ name: '', email: '', category: 'Data Discrepancy', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sendError, setSendError] = useState('');
+
+  const emailConfig = useMemo(() => ({
+    serviceId: process.env.REACT_APP_EMAILJS_SERVICE_ID,
+    templateId: process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+    publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
+  }), []);
+
+  const isEmailConfigured = Boolean(emailConfig.serviceId && emailConfig.templateId && emailConfig.publicKey);
+
+  useEffect(() => {
+    if (emailConfig.publicKey) {
+      emailjs.init({ publicKey: emailConfig.publicKey });
+    }
+  }, [emailConfig.publicKey]);
+
+  const getEmailErrorMessage = (error) => {
+    const detail = error?.text ? ` EmailJS says: ${error.text}` : '';
+    const text = error?.text || '';
+
+    if (text.toLowerCase().includes('invalid grant')) {
+      return 'EmailJS is connected, but Gmail authorization expired. Reconnect the Gmail service in EmailJS, then use "Send test email" in the EmailJS dashboard.';
+    }
+
+    if (error?.status === 412) {
+      return `EmailJS rejected the request. Check your service, template, public key, and required template variables.${detail}`;
+    }
+    if (error?.status === 403) return 'EmailJS blocked this request. Check allowed origins and account restrictions.';
+    if (error?.status === 429) return 'Too many support requests were sent. Please wait a moment and try again.';
+    return `Failed to send message. Please try again later.${detail}`;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSendError('');
+
+    if (!isEmailConfigured) {
+      setSendError('EmailJS is not configured. Add service ID, template ID, and public key to .env, then restart the dev server.');
+      return;
+    }
+
     setLoading(true);
 
     try {
       await emailjs.send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        emailConfig.serviceId,
+        emailConfig.templateId,
         {
           name: form.name,
+          from_name: form.name,
+          user_name: form.name,
           email: form.email,
+          from_email: form.email,
+          user_email: form.email,
+          reply_to: form.email,
           title: form.category,
+          subject: form.category,
+          category: form.category,
           message: form.message,
           time: new Date().toLocaleString(),
-          to_email: 'choukerlahoucine@gmail.com'
+          to_email: 'clankcmc@gmail.com'
         },
-        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+        emailConfig.publicKey
       );
       setSubmitted(true);
       setForm({ name: '', email: '', category: 'Data Discrepancy', message: '' });
     } catch (error) {
-      console.error('EmailJS Error:', error);
-      alert('Failed to send message. Please try again later.');
+      console.error('EmailJS request failed:', { status: error?.status, text: error?.text });
+      setSendError(getEmailErrorMessage(error));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
-      <div style={{ marginBottom: '48px' }}>
+    <div className="support-page" style={{ maxWidth: '1280px', margin: '0 auto', width: '100%' }}>
+      <div className="support-heading" style={{ marginBottom: '48px' }}>
         <h2 style={{ fontSize: '48px', fontWeight: 900, letterSpacing: '-0.04em', color: 'var(--on-surface)', marginBottom: '8px' }}>Support</h2>
         <p style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--outline)' }}>Technical Assistance & Queries</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px' }}>
+      <div className="support-layout" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '48px' }}>
         {/* Left Column: Form */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-          <div className="card--glass" style={{ padding: '40px', background: 'var(--surface-container-low)' }}>
+          <div className="card--glass support-card" style={{ padding: '40px', background: 'var(--surface-container-low)' }}>
             <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--on-surface)', marginBottom: '32px' }}>Submit a Request</h3>
             
             {submitted ? (
@@ -118,8 +163,13 @@ function Support() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {sendError && (
+                  <div style={{ background: 'var(--error-container)', color: 'var(--on-error-container)', border: '1px solid var(--error)', padding: '12px 14px', fontSize: 12, lineHeight: 1.5, fontWeight: 700 }}>
+                    {sendError}
+                  </div>
+                )}
+                <div className="support-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                  <div className="support-field" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Name</label>
                     <input 
                       type="text" 
@@ -127,10 +177,10 @@ function Support() {
                       value={form.name}
                       onChange={e => setForm({...form, name: e.target.value})}
                       required
-                      style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none' }}
+                      style={{ width: '100%', minWidth: 0, background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none' }}
                     />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div className="support-field" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Email</label>
                     <input 
                       type="email" 
@@ -138,17 +188,17 @@ function Support() {
                       value={form.email}
                       onChange={e => setForm({...form, email: e.target.value})}
                       required
-                      style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none' }}
+                      style={{ width: '100%', minWidth: 0, background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none' }}
                     />
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="support-field" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Query Category</label>
                   <select 
                     value={form.category}
                     onChange={e => setForm({...form, category: e.target.value})}
-                    style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none', appearance: 'none' }}
+                    style={{ width: '100%', minWidth: 0, background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none', appearance: 'none' }}
                   >
                     <option>Data Discrepancy</option>
                     <option>Account Issue</option>
@@ -157,7 +207,7 @@ function Support() {
                   </select>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div className="support-field" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   <label style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-surface-variant)' }}>Message Details</label>
                   <textarea 
                     placeholder="Describe the technical issue..."
@@ -165,7 +215,7 @@ function Support() {
                     value={form.message}
                     onChange={e => setForm({...form, message: e.target.value})}
                     required
-                    style={{ background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none', resize: 'none' }}
+                    style={{ width: '100%', minWidth: 0, background: 'transparent', border: 'none', borderBottom: '1px solid var(--outline-variant)', padding: '8px 0', fontSize: '14px', color: 'var(--on-surface)', outline: 'none', resize: 'vertical' }}
                   />
                 </div>
 
@@ -182,7 +232,8 @@ function Support() {
                       textTransform: 'uppercase', 
                       fontSize: '11px', 
                       letterSpacing: '0.12em', 
-                      cursor: 'pointer',
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      opacity: loading ? 0.7 : 1,
                       display: 'flex',
                       alignItems: 'center',
                       gap: '10px'
@@ -222,7 +273,7 @@ function Support() {
             <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--on-primary-container)' }}>mail</span>
             <div>
               <h5 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--on-primary)', marginBottom: '4px' }}>Direct Email</h5>
-              <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--on-primary-container)' }}>choukerlahoucine@gmail.com</p>
+              <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--on-primary-container)' }}>clankcmc@gmail.com</p>
               <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--on-primary-container)', opacity: 0.7, marginTop: '8px' }}>Response time: &lt; 2 hours</p>
             </div>
           </div>

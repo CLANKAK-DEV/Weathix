@@ -184,8 +184,7 @@ export async function searchCities(q) {
 
 // Build an OpenWeatherMap tile URL for the given layer (rain/temp/wind/etc.).
 export const weatherTileUrl = (layer) => {
-  const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
-  return `https://tile.openweathermap.org/map/${layer}/{z}/{x}/{y}.png?appid=${apiKey}`;
+  return `/api/weather-tile?layer=${encodeURIComponent(layer)}&z={z}&x={x}&y={y}`;
 };
 
 export const getWeatherByCoords   = async (lat, lon) => (await getWeatherData(lat, lon)).current;

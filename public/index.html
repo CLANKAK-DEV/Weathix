@@ -2,14 +2,111 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0ea5e9" />
-    <meta
-      name="description"
-      content="A professional weather dashboard with real-time updates and dynamic themes."
-    />
-    <title>Weather</title>
+    <meta name="theme-color" content="#061b0e" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="application-name" content="Weathix" />
+    <meta name="apple-mobile-web-app-title" content="Weathix" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <title>Weathix | Real-Time Weather Dashboard, Forecasts, Radar Map and AI Weather Assistant</title>
+    <meta name="description" content="Weathix is a fast, privacy-focused weather dashboard with real-time conditions, city search, 14-day forecasts, interactive radar maps, saved locations, and an AI weather assistant." />
+    <meta name="keywords" content="weather app, real time weather, weather dashboard, weather forecast, radar map, AI weather assistant, Morocco weather, Agadir weather, Casablanca weather, saved weather locations" />
+    <meta name="author" content="Weathix" />
+    <meta name="creator" content="Weathix" />
+    <meta name="publisher" content="Weathix" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <meta name="geo.region" content="MA" />
+    <meta name="geo.placename" content="Morocco" />
+    <meta name="geo.position" content="31.7917;-7.0926" />
+    <meta name="ICBM" content="31.7917, -7.0926" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Weathix" />
+    <meta property="og:title" content="Weathix | Real-Time Weather Dashboard" />
+    <meta property="og:description" content="Track current weather, forecasts, radar overlays, saved cities, and AI weather advice in one clean responsive dashboard." />
+    <meta property="og:image" content="%PUBLIC_URL%/logo.png" />
+    <meta property="og:image:alt" content="Weathix weather dashboard logo" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Weathix | Real-Time Weather Dashboard" />
+    <meta name="twitter:description" content="Real-time weather, 14-day forecasts, radar maps, saved locations, and AI weather guidance." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/logo.png" />
+
+    <link rel="icon" href="%PUBLIC_URL%/logo.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="canonical" href="/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <link rel="preconnect" href="https://geocoding-api.open-meteo.com" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "#website",
+            "name": "Weathix",
+            "url": "/",
+            "description": "Real-time weather dashboard with forecasts, radar maps, saved cities, and AI weather guidance.",
+            "inLanguage": "en",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "/dashboard?city={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "#webapp",
+            "name": "Weathix",
+            "applicationCategory": "WeatherApplication",
+            "operatingSystem": "Web",
+            "url": "/",
+            "image": "/logo.png",
+            "description": "Privacy-focused weather app for real-time conditions, 14-day forecasts, radar overlays, saved locations, and AI weather advice.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "featureList": [
+              "Real-time weather conditions",
+              "14-day forecast",
+              "Interactive weather radar map",
+              "Saved locations",
+              "AI weather assistant",
+              "Mobile responsive dashboard"
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "#organization",
+            "name": "Weathix",
+            "url": "/",
+            "logo": "/logo.png",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "email": "clankcmc@gmail.com",
+              "contactType": "customer support",
+              "availableLanguage": ["en", "fr", "ar"]
+            },
+            "areaServed": {
+              "@type": "Country",
+              "name": "Morocco"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

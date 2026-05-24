@@ -27,13 +27,16 @@ built around the app's sun-and-cloud logo.
 | **OpenStreetMap Nominatim**       | Reverse geocoding (coords → city)         |
 | **OpenWeatherMap tiles**          | Raster map overlays (rain / temp / wind)  |
 | **ipapi.co** (+ ipwho.is fallback)| Approximate location from IP              |
-| **Venice AI**                     | Natural-language weather assistant        |
+| **DeepSeek API**                  | Natural-language weather assistant        |
 
 ### Environment variables (`.env`)
 
 ```ini
-REACT_APP_OPENWEATHER_API_KEY=...    # tile overlays
-REACT_APP_VENICE_API_KEY=...         # AI chat assistant
+OPENWEATHER_API_KEY=...              # server-side tile overlays
+DEEPSEEK_API_KEY=...                 # server-side AI chat assistant key
+DEEPSEEK_MODEL=deepseek-v4-flash     # official DeepSeek chat model
+KV_REST_API_URL=...                  # persistent IP daily limits
+KV_REST_API_TOKEN=...
 REACT_APP_EMAILJS_SERVICE_ID=...     # support form
 REACT_APP_EMAILJS_TEMPLATE_ID=...
 REACT_APP_EMAILJS_PUBLIC_KEY=...
@@ -57,7 +60,9 @@ weather-app/
 │   ├── services/
 │   │   ├── weatherService.js   # Open-Meteo + geocoding + tile URLs
 │   │   ├── geoService.js       # IP → coordinates
-│   │   └── nvidiaAIService.js  # Venice AI chat calls + daily quota
+│   │   └── deepSeekAIService.js # AI chat proxy client + daily quota
+├── api/
+│   └── deepseek-chat.js        # Server-side DeepSeek API proxy
 │   ├── models/                 # MVVM: plain data factories + invariants
 │   │   ├── ChatMessageModel.js
 │   │   ├── CityModel.js

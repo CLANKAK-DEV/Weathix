@@ -1,9 +1,38 @@
 {
-  "short_name": "Weather",
-  "name": "Weather App",
-  "icons": [],
-  "start_url": ".",
+  "short_name": "Weathix",
+  "name": "Weathix Weather Dashboard",
+  "description": "Real-time weather, 14-day forecasts, radar maps, saved locations, and AI weather advice.",
+  "categories": ["weather", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/dashboard",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#0ea5e9",
-  "background_color": "#ffffff"
+  "orientation": "portrait-primary",
+  "theme_color": "#061b0e",
+  "background_color": "#f8faf8",
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Open the weather dashboard",
+      "url": "/dashboard",
+      "icons": [{ "src": "/logo.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Support",
+      "short_name": "Support",
+      "description": "Contact Weathix support",
+      "url": "/support",
+      "icons": [{ "src": "/logo.png", "sizes": "512x512" }]
+    }
+  ]
 }

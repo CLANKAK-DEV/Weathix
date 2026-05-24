@@ -1,5 +1,6 @@
 import React from 'react';
 import { useChatViewModel } from '../viewmodels/useChatViewModel';
+import { MAX_CHAT_TEXT_LENGTH } from '../services/deepSeekAIService';
 
 function ChatAgent({ weather }) {
   const { open, toggleOpen, messages, input, setInput, loading, usage, listRef, submit, ask } = useChatViewModel(weather);
@@ -9,13 +10,44 @@ function ChatAgent({ weather }) {
 
   return (
     <>
+      <style>{`
+        .chat-toggle-btn {
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+        }
+        .chat-window {
+          position: fixed;
+          bottom: 96px;
+          right: 24px;
+          width: 420px;
+          height: 600px;
+          max-width: calc(100vw - 2rem);
+          max-height: calc(100vh - 120px);
+          border-radius: 24px;
+        }
+        @media (max-width: 600px) {
+          .chat-toggle-btn {
+            bottom: 16px;
+            right: 16px;
+          }
+          .chat-window {
+            bottom: 0;
+            right: 0;
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            border-radius: 0;
+          }
+        }
+        @keyframes chatWait { 0%,80%,100% { transform: scale(0); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+      `}</style>
       <button
+        className="chat-toggle-btn"
         onClick={toggleOpen}
         title="AI Weather Assistant"
         style={{
-          position: 'fixed',
-          bottom: 24,
-          right: 24,
           zIndex: 40,
           height: 56,
           width: open ? 56 : 'auto',
@@ -28,6 +60,9 @@ function ChatAgent({ weather }) {
           gap: 10,
           boxShadow: 'var(--shadow-lg)',
           transition: 'background 0.2s ease, width 0.25s ease',
+          borderRadius: 28,
+          border: 'none',
+          cursor: 'pointer'
         }}
         onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--primary-container)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--primary)'; }}
@@ -44,15 +79,9 @@ function ChatAgent({ weather }) {
 
       {open && (
         <div
-          className="slab--glass slab-in"
+          className="slab--glass slab-in chat-window"
           style={{
-            position: 'fixed',
-            bottom: 96,
-            right: 24,
             zIndex: 40,
-            width: 420,
-            maxWidth: 'calc(100vw - 2rem)',
-            height: 600,
             boxShadow: 'var(--shadow-lg)',
             display: 'flex',
             flexDirection: 'column',
@@ -184,7 +213,7 @@ function ChatAgent({ weather }) {
               <button
                 key={a}
                 onClick={() => ask(a)}
-                disabled={loading}
+                disabled={loading || exhausted}
                 style={{
                   fontSize: 10,
                   fontWeight: 700,
@@ -194,10 +223,10 @@ function ChatAgent({ weather }) {
                   background: 'var(--surface)',
                   border: '1px solid var(--outline-variant)',
                   color: 'var(--on-surface-variant)',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  opacity: loading ? 0.5 : 1,
+                  cursor: loading || exhausted ? 'not-allowed' : 'pointer',
+                  opacity: loading || exhausted ? 0.5 : 1,
                 }}
-                onMouseEnter={(e) => { if (!loading) { e.currentTarget.style.background = 'var(--primary-container)'; e.currentTarget.style.color = 'var(--on-primary)'; } }}
+                onMouseEnter={(e) => { if (!loading && !exhausted) { e.currentTarget.style.background = 'var(--primary-container)'; e.currentTarget.style.color = 'var(--on-primary)'; } }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.color = 'var(--on-surface-variant)'; }}
               >
                 {a}
@@ -208,19 +237,20 @@ function ChatAgent({ weather }) {
           <form
             onSubmit={submit}
             style={{
-              padding: 16,
+              padding: '16px 16px 22px',
               display: 'flex',
               gap: 10,
               borderTop: '1px solid var(--outline-variant)',
               background: 'var(--surface)',
+              position: 'relative',
             }}
           >
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Message Weather AI..."
-              disabled={loading}
-              maxLength={500}
+              placeholder={exhausted ? 'Daily request limit reached' : 'Message Weather AI...'}
+              disabled={loading || exhausted}
+              maxLength={MAX_CHAT_TEXT_LENGTH}
               style={{
                 flex: 1,
                 background: 'var(--surface-container-low)',
@@ -233,16 +263,19 @@ function ChatAgent({ weather }) {
               onFocus={(e) => (e.target.style.borderColor = 'var(--primary-container)')}
               onBlur={(e) => (e.target.style.borderColor = 'var(--outline-variant)')}
             />
+            <span style={{ position: 'absolute', left: 18, bottom: 4, fontSize: 9, color: 'var(--outline)', fontWeight: 700 }}>
+              {input.length}/{MAX_CHAT_TEXT_LENGTH}
+            </span>
             <button
               type="submit"
-              disabled={loading || !input.trim()}
+              disabled={loading || exhausted || !input.trim()}
               style={{
                 width: 44,
                 height: 44,
-                background: loading || !input.trim() ? 'var(--surface-container-highest)' : 'var(--primary)',
-                color: loading || !input.trim() ? 'var(--outline)' : 'var(--on-primary)',
+                background: loading || exhausted || !input.trim() ? 'var(--surface-container-highest)' : 'var(--primary)',
+                color: loading || exhausted || !input.trim() ? 'var(--outline)' : 'var(--on-primary)',
                 border: 'none',
-                cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
+                cursor: loading || exhausted || !input.trim() ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

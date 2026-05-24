@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getWeatherAIResponse, getDailyUsage } from '../services/nvidiaAIService';
+import { getWeatherAIResponse, getDailyUsage } from '../services/deepSeekAIService';
 import { botMessage, errorMessage, userMessage } from '../models/ChatMessageModel';
 
 const GREETING = botMessage(
@@ -22,10 +22,11 @@ export function useChatViewModel(weather) {
     const trimmed = (text || '').trim();
     if (!trimmed || loading) return;
 
-    setMessages((m) => [...m, userMessage(trimmed)]);
+    const newMessages = [...messages.filter((m) => !m.isError), userMessage(trimmed)];
+    setMessages(newMessages);
     setLoading(true);
     try {
-      const result = await getWeatherAIResponse(trimmed, weather);
+      const result = await getWeatherAIResponse(newMessages, weather);
       if (result.error) setMessages((m) => [...m, errorMessage(result.error)]);
       else setMessages((m) => [...m, botMessage(result.response)]);
       setUsage(getDailyUsage());
@@ -34,7 +35,7 @@ export function useChatViewModel(weather) {
     } finally {
       setLoading(false);
     }
-  }, [loading, weather]);
+  }, [loading, weather, messages]);
 
   const submit = useCallback(async (e) => {
     e?.preventDefault?.();

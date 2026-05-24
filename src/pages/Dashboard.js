@@ -161,7 +161,7 @@ function SearchBar({ onSelect }) {
   const pick = c => { onSelect(c); setQ(''); setRes([]); setOpen(false); };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="search-bar" style={{ position: 'relative' }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
         background: 'var(--surface-container-low)', border: '1px solid var(--outline-variant)',
@@ -902,7 +902,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: "'Inter',system-ui,sans-serif", background: 'var(--bg-app)', color: 'var(--text-main)', fontSize: '18px' }}>
+    <div className="app-shell" style={{ display: 'flex', height: '100vh', overflow: 'hidden', fontFamily: "'Inter',system-ui,sans-serif", background: 'var(--bg-app)', color: 'var(--text-main)', fontSize: '18px' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
@@ -919,13 +919,13 @@ export default function Dashboard() {
         button{font-family:inherit}
       `}</style>
 
-      <aside className="slab--glass" style={{ width: 256, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '32px 0', overflowY: 'auto', border: 'none', borderRight: '1px solid var(--outline-variant)', zIndex: 10 }}>
-        <div style={{ padding: '0 32px', marginBottom: 32 }}>
+      <aside className="slab--glass app-sidebar" style={{ width: 256, flexShrink: 0, display: 'flex', flexDirection: 'column', padding: '32px 0', overflowY: 'auto', border: 'none', borderRight: '1px solid var(--outline-variant)', zIndex: 10 }}>
+        <div className="app-sidebar-brand" style={{ padding: '0 32px', marginBottom: 32 }}>
           <h1 style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.04em', color: 'var(--primary-container)', textTransform: 'uppercase' }}>Weather</h1>
           <p style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--secondary)', marginTop: 4 }}>Architectural Ledger</p>
         </div>
 
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '0 16px', marginBottom: 24 }}>
+        <nav className="app-nav" style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '0 16px', marginBottom: 24 }}>
           <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>dashboard</span>} label="Dashboard" active={view === 'dashboard'} onClick={() => setView('dashboard')} />
           <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>map</span>} label="Maps" active={view === 'map'} onClick={() => setView('map')} />
           <NavItem icon={<span className="material-symbols-outlined" style={{ fontSize: 20 }}>bookmark</span>} label="Saved Locations" active={view === 'saved'} onClick={() => setView('saved')} />
@@ -936,8 +936,8 @@ export default function Dashboard() {
 
         {saved.length > 0 && (
           <>
-            <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--outline)', padding: '0 32px', marginBottom: 10 }}>Saved</div>
-            <div style={{ display: 'flex', flexDirection: 'column', maxHeight: 240, overflowY: 'auto', padding: '0 16px' }}>
+            <div className="app-sidebar-saved-label" style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--outline)', padding: '0 32px', marginBottom: 10 }}>Saved</div>
+            <div className="app-sidebar-saved-list" style={{ display: 'flex', flexDirection: 'column', maxHeight: 240, overflowY: 'auto', padding: '0 16px' }}>
               {saved.map((c) => (
                 <SidebarSavedItem
                   key={`${c.lat}-${c.lon}`}
@@ -953,7 +953,7 @@ export default function Dashboard() {
           </>
         )}
 
-        <div style={{ marginTop: 'auto', padding: '0 16px' }}>
+        <div className="app-sidebar-footer" style={{ marginTop: 'auto', padding: '0 16px' }}>
           <button
             onClick={locateMe}
             style={{
@@ -981,8 +981,8 @@ export default function Dashboard() {
 
       </aside>
 
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 32px', background: 'var(--background)', borderBottom: '1px solid var(--outline-variant)', flexShrink: 0, position: 'sticky', top: 0, zIndex: 100, gap: 16 }}>
+      <main className="app-main" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <header className="app-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 32px', background: 'var(--background)', borderBottom: '1px solid var(--outline-variant)', flexShrink: 0, position: 'sticky', top: 0, zIndex: 100, gap: 16 }}>
           <div style={{ minWidth: 0 }}>
             <h1 style={{ fontSize: 24, fontWeight: 900, color: 'var(--on-surface)', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
               {view === 'support' ? 'Support' : view === 'settings' ? 'Settings' : view === 'map' ? 'Maps' : view === 'calendar' ? 'Calendar' : view === 'saved' ? 'Saved Locations' : 'Dashboard'}
@@ -1007,7 +1007,7 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div id="dashboard-content" style={{ flex: 1, overflowY: 'auto', padding: view === 'map' ? 0 : '28px 32px 40px', display: 'flex', flexDirection: 'column', gap: view === 'map' ? 0 : 28 }}>
+        <div id="dashboard-content" className={`app-content app-content--${view}`} style={{ flex: 1, overflowY: 'auto', padding: view === 'map' ? 0 : '28px 32px 40px', display: 'flex', flexDirection: 'column', gap: view === 'map' ? 0 : 28 }}>
           {loading && !weather && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '55vh', gap: 16 }}>
               <div style={{ width: 36, height: 36, border: '2px solid var(--outline-variant)', borderTopColor: 'var(--primary-container)', animation: 'spin .9s linear infinite' }} />
@@ -1028,8 +1028,8 @@ export default function Dashboard() {
 
           {view === 'dashboard' && weather && (
             <div className="fade-up" style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 430px)', gap: 20, alignItems: 'stretch' }}>
-                <div className="card--glass" style={{ padding: '32px 36px', background: 'var(--primary-container)', color: 'var(--on-primary)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 380, border: 'none' }}>
+              <div className="app-dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(320px, 430px)', gap: 20, alignItems: 'stretch' }}>
+                <div className="card--glass weather-hero-card" style={{ padding: '32px 36px', background: 'var(--primary-container)', color: 'var(--on-primary)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 380, border: 'none' }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24 }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <h2 style={{ fontSize: 32, fontWeight: 900, letterSpacing: '-0.04em', textTransform: 'uppercase', marginBottom: 4, color: 'var(--on-primary)' }}>
@@ -1067,7 +1067,7 @@ export default function Dashboard() {
 
                   <div style={{ marginTop: 32 }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                      <span style={{ fontSize: 110, fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.05em', color: 'var(--on-primary)' }}>{formatTemp(weather.temp)}</span>
+                      <span className="weather-main-temp" style={{ fontSize: 110, fontWeight: 900, lineHeight: 0.85, letterSpacing: '-0.05em', color: 'var(--on-primary)' }}>{formatTemp(weather.temp)}</span>
                       <span style={{ fontSize: 40, fontWeight: 600, marginTop: 12, color: 'rgba(255,255,255,0.6)' }}>°{unit}</span>
                     </div>
                     <div style={{ display: 'flex', gap: 8, marginTop: 18, flexWrap: 'wrap' }}>
@@ -1085,20 +1085,20 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, marginTop: 32, background: 'rgba(255,255,255,0.12)' }}>
+                  <div className="weather-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, marginTop: 32, background: 'rgba(255,255,255,0.12)' }}>
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>water_drop</span>} label="Humidity" value={`${weather.humidity}%`} subValue={`Dew ${formatTemp(weather.dew_point)}°`} accent="rgba(255,255,255,0.1)" />
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>air</span>} label="Wind" value={`${Math.round(weather.wind_speed)}`} subValue={`${weather.wind_deg}° km/h`} accent="rgba(255,255,255,0.1)" />
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>wb_sunny</span>} label="UV Index" value={weather.uv_index.toFixed(1)} subValue={weather.uv_index < 3 ? 'Low' : weather.uv_index < 6 ? 'Moderate' : weather.uv_index < 8 ? 'High' : 'Very High'} accent="rgba(255,255,255,0.1)" />
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>visibility</span>} label="Visibility" value={`${(weather.visibility / 1000).toFixed(1)}`} subValue={weather.visibility > 10000 ? 'Excellent' : weather.visibility > 5000 ? 'Good' : 'Reduced'} accent="rgba(255,255,255,0.1)" />
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, marginTop: 1, background: 'rgba(255,255,255,0.12)' }}>
+                  <div className="weather-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, marginTop: 1, background: 'rgba(255,255,255,0.12)' }}>
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>speed</span>} label="Pressure" value={`${weather.pressure}`} subValue={weather.pressure > 1013 ? 'High' : weather.pressure < 1000 ? 'Low' : 'Normal'} accent="rgba(255,255,255,0.1)" />
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>cloud</span>} label="Clouds" value={`${weather.clouds || 0}%`} subValue={weather.clouds < 25 ? 'Clear' : weather.clouds < 50 ? 'Partly' : weather.clouds < 75 ? 'Mostly' : 'Overcast'} accent="rgba(255,255,255,0.1)" />
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>schedule</span>} label="Daylight" value={`${Math.round((new Date(weather.sunset) - new Date(weather.sunrise)) / 3600000)}h`} subValue="Sun hours" accent="rgba(255,255,255,0.1)" />
                     <Stat icon={<span className="material-symbols-outlined" style={{ fontSize: 18 }}>rainy</span>} label="Precip" value={`${weather.precipitation || 0}%`} subValue={weather.precipitation > 50 ? 'Likely' : weather.precipitation > 20 ? 'Possible' : 'Unlikely'} accent="rgba(255,255,255,0.1)" />
                   </div>
                 </div>
-                <div style={{ overflow: 'hidden', background: 'var(--surface)', border: mapFull ? 'none' : '1px solid var(--outline-variant)', position: mapFull ? 'fixed' : 'relative', top: mapFull ? 0 : 'auto', left: mapFull ? 0 : 'auto', right: mapFull ? 0 : 'auto', bottom: mapFull ? 0 : 'auto', zIndex: mapFull ? 9999 : 'auto', minHeight: mapFull ? '100vh' : '350px', height: mapFull ? '100vh' : '100%' }}>
+                <div className="weather-map-card" style={{ overflow: 'hidden', background: 'var(--surface)', border: mapFull ? 'none' : '1px solid var(--outline-variant)', position: mapFull ? 'fixed' : 'relative', top: mapFull ? 0 : 'auto', left: mapFull ? 0 : 'auto', right: mapFull ? 0 : 'auto', bottom: mapFull ? 0 : 'auto', zIndex: mapFull ? 9999 : 'auto', minHeight: mapFull ? '100vh' : '350px', height: mapFull ? '100vh' : '100%' }}>
                   <MapContainer center={[weather.lat, weather.lon]} zoom={6} zoomControl={true} style={{ width: '100%', height: '100%', minHeight: mapFull ? '100vh' : '350px' }} touchZoom={true} scrollWheelZoom={true} doubleClickZoom={true}>
                     <Recenter lat={weather.lat} lon={weather.lon} />
                     <TileLayer url={`https://{s}.basemaps.cartocdn.com/${darkMode ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`} />
@@ -1121,8 +1121,8 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--outline-variant)', padding: 28 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--outline-variant)' }}>
+              <div className="section-card" style={{ background: 'var(--surface)', border: '1px solid var(--outline-variant)', padding: 28 }}>
+                <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--outline-variant)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span className="material-symbols-outlined" style={{ fontSize: 20, color: 'var(--primary-container)' }}>schedule</span>
                     <div>
@@ -1135,8 +1135,8 @@ export default function Dashboard() {
                 <div ref={hourlyRef} style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 10 }}>{hourly.map((h, i) => <HourlySlot key={i} h={h} />)}</div>
               </div>
 
-              <div style={{ background: 'var(--surface)', border: '1px solid var(--outline-variant)', padding: 28 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--outline-variant)' }}>
+              <div className="section-card" style={{ background: 'var(--surface)', border: '1px solid var(--outline-variant)', padding: 28 }}>
+                <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--outline-variant)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span className="material-symbols-outlined" style={{ fontSize: 20, color: 'var(--primary-container)' }}>calendar_today</span>
                     <div>
@@ -1147,7 +1147,7 @@ export default function Dashboard() {
                   <div style={S.filterGroup}>{FC_FILTERS.map(f => <FilterBtn key={f.id} {...f} active={fcFilter === f.id} onClick={() => setFcFilter(f.id)} />)}</div>
                 </div>
                 {daily.length <= 7 ? (
-                  <div style={{ display: 'grid', gridTemplateColumns: `repeat(${daily.length}, minmax(0, 1fr))`, gap: 12 }}>
+                  <div className="forecast-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${daily.length}, minmax(0, 1fr))`, gap: 12 }}>
                     {daily.map((d, i) => <ForecastDayCard key={i} d={d} idx={i} onClick={setSelectedDay} />)}
                   </div>
                 ) : (

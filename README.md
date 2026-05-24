@@ -19,9 +19,17 @@ npm install
 ### 3. Configuration
 Create a `.env` file in the root directory and add your API keys:
 ```ini
-REACT_APP_OPENWEATHER_API_KEY=your_key_here
-REACT_APP_VENICE_API_KEY=your_key_here
+OPENWEATHER_API_KEY=your_openweather_key_here
+DEEPSEEK_API_KEY=your_deepseek_key_here
+DEEPSEEK_MODEL=deepseek-v4-flash
+KV_REST_API_URL=your_vercel_kv_or_upstash_url
+KV_REST_API_TOKEN=your_vercel_kv_or_upstash_token
+REACT_APP_EMAILJS_SERVICE_ID=your_service_id
+REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
+REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
 ```
+
+For production, keep paid API keys server-side only. Use `DEEPSEEK_API_KEY` and `OPENWEATHER_API_KEY`, never `REACT_APP_DEEPSEEK_API_KEY` or `REACT_APP_OPENWEATHER_API_KEY`, because `REACT_APP_*` values are bundled into browser JavaScript. Add Vercel KV or Upstash Redis env vars so the daily AI limit persists by IP even if someone clears cookies.
 
 ### 4. Launch
 Start the development server:
